@@ -6,7 +6,6 @@ abstract class Fish extends Marine{
   float maxSpeed;
   float maxForce;
   float arrivalRadius;
-  color c;
 
   Fish(float x, float y, PVector vel) {
     super(x, y);

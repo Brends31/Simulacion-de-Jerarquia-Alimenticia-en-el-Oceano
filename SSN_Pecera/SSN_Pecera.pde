@@ -3,6 +3,7 @@ ArrayList<Marine> marines;
 int agentCount;
 boolean campoVisible = true;
 boolean settingPreys = true;
+boolean settingSeaweeds = false;
 boolean settingPredators = false;
 
 float extraDegrees = TWO_PI/360;
@@ -12,12 +13,6 @@ void setup() {
   background(#27CED6);
   sea = new Sea(20, 0.2, 0.000001);
   marines = new ArrayList<Marine>();
-  marines.add(new Prey(random(width), random(height), PVector.random2D()));
-  marines.add(new Prey(random(width), random(height), PVector.random2D()));
-  marines.add(new Predator(random(width), random(height), PVector.random2D()));
-  marines.add(new Predator(random(width), random(height), PVector.random2D()));
-  
-  marines.add(new Seaweed(100, 100));
 }
 
 void draw() {
@@ -42,10 +37,10 @@ void draw() {
   if (mousePressed) {
     if (settingPreys) {
       marines.add(new Prey(mouseX, mouseY, PVector.random2D()));
-    }
-
-    else if (settingPredators) {
+    } else if (settingPredators) {
       marines.add(new Predator(mouseX, mouseY, PVector.random2D()));
+    } else if (settingSeaweeds){
+      marines.add(new Seaweed(mouseX,mouseY));
     }
   }
 }
@@ -53,14 +48,21 @@ void draw() {
 void keyPressed() {
   if (keyPressed) {
     campoVisible = (key == 'q' || key == 'Q') ? !campoVisible : campoVisible;
-    if (key == 'w' || key == 'W'){
+    if (key == 'w' || key == 'W') {
       settingPreys = true;
       settingPredators = false;
+      settingSeaweeds = false;
     }
-    if (key == 'e' || key == 'E'){
+    if (key == 'e' || key == 'E') {
       settingPreys = false;
       settingPredators = true;
+      settingSeaweeds = false;
+    }
+
+    if (key == 'r' || key == 'R') {
+      settingPreys = false;
+      settingPredators = false;
+      settingSeaweeds = true;
     }
   }
-  
 }

@@ -1,7 +1,7 @@
 class Seaweed extends Marine{
   Seaweed(float x, float y){
     super(x, y);
-    c = color(0, 255, 0);
+    this.c = color(0, 255, 0);
   }
   
   void display(){
