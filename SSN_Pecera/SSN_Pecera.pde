@@ -31,7 +31,6 @@ void draw() {
   for (Marine v : marines) {
     if (v instanceof Fish) {
       Fish v1 = (Fish) v;
-      PVector mouse = new PVector(mouseX, mouseY);
       PVector f = sea.getForce(v.pos.x, v.pos.y);
       f.normalize();
       v1.applyForce(f);
