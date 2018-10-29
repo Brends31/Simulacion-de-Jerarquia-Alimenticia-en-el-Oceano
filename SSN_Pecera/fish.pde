@@ -1,4 +1,4 @@
-abstract class Fish extends Marine{
+abstract class Fish extends Marine {
   PVector vel;
   PVector acc;
   float mass;
@@ -53,7 +53,7 @@ abstract class Fish extends Marine{
       vel.y *= -0.6;
     }
   }
-  
+
   //void seek(PVector target) {
   //  PVector desired = PVector.sub(target, pos);
   //  desired.setMag(maxSpeed);
@@ -61,6 +61,17 @@ abstract class Fish extends Marine{
   //  steering.limit(maxForce);
   //  applyForce(steering);
   //}
+
+  void arrive(PVector targetPos) {
+    PVector desired = PVector.sub(targetPos, pos);
+    float d = PVector.dist(targetPos, pos);
+    d = constrain(d, 0, arrivalRadius);
+    float speed = map(d, 0, arrivalRadius, 0, maxSpeed);
+    vel.setMag(speed);
+    PVector steering = PVector.sub(desired, vel);
+    steering.limit(maxForce);
+    applyForce(steering);
+  }
 
   abstract void seek();
   abstract void hunt(ArrayList<Marine> marines);

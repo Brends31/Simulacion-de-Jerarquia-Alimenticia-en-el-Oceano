@@ -12,14 +12,7 @@ class Predator extends Fish {
     for (Marine target : marines) {
       if (target instanceof Prey) {
         PVector targetPos = target.pos;
-        PVector desired = PVector.sub(targetPos, pos);
-        float d = PVector.dist(targetPos, pos);
-        d = constrain(d, 0, arrivalRadius);
-        float speed = map(d, 0, arrivalRadius, 0, maxSpeed);
-        vel.setMag(speed);
-        PVector steering = PVector.sub(desired, vel);
-        steering.limit(maxForce);
-        applyForce(steering);
+        arrive(targetPos);
       }
     }
   }
