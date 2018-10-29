@@ -1,5 +1,5 @@
 Sea sea;
-ArrayList<Fish> fish;
+ArrayList<Marine> marines;
 int agentCount;
 boolean campoVisible = true;
 boolean settingPreys = true;
@@ -11,11 +11,13 @@ void setup() {
   fullScreen(P2D);
   background(#27CED6);
   sea = new Sea(20, 0.2, 0.000001);
-  fish = new ArrayList<Fish>();
-  fish.add(new Prey(random(width), random(height), PVector.random2D()));
-  fish.add(new Prey(random(width), random(height), PVector.random2D()));
-  fish.add(new Predator(random(width), random(height), PVector.random2D()));
-  fish.add(new Predator(random(width), random(height), PVector.random2D()));
+  marines = new ArrayList<Marine>();
+  marines.add(new Prey(random(width), random(height), PVector.random2D()));
+  marines.add(new Prey(random(width), random(height), PVector.random2D()));
+  marines.add(new Predator(random(width), random(height), PVector.random2D()));
+  marines.add(new Predator(random(width), random(height), PVector.random2D()));
+  
+  marines.add(new Seaweed(100, 100));
 }
 
 void draw() {
@@ -26,22 +28,25 @@ void draw() {
   sea.update();
   if (campoVisible)sea.display();
 
-  for (Fish v : fish) {
-    PVector mouse = new PVector(mouseX, mouseY);
-    PVector f = sea.getForce(v.pos.x, v.pos.y);
-    f.normalize();
-    v.applyForce(f);
-    v.hunt(fish);
-    v.update();
+  for (Marine v : marines) {
+    if (v instanceof Fish) {
+      Fish v1 = (Fish) v;
+      PVector mouse = new PVector(mouseX, mouseY);
+      PVector f = sea.getForce(v.pos.x, v.pos.y);
+      f.normalize();
+      v1.applyForce(f);
+      v1.hunt(marines);
+      v1.update();
+    }
     v.display();
   }
   if (mousePressed) {
     if (settingPreys) {
-      fish.add(new Prey(mouseX, mouseY, PVector.random2D()));
+      marines.add(new Prey(mouseX, mouseY, PVector.random2D()));
     }
 
     else if (settingPredators) {
-      fish.add(new Predator(mouseX, mouseY, PVector.random2D()));
+      marines.add(new Predator(mouseX, mouseY, PVector.random2D()));
     }
   }
 }
