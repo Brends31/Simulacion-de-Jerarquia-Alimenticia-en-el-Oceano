@@ -1,4 +1,4 @@
-abstract class pez{
+abstract class fish{
   float size;
   color c;
   
