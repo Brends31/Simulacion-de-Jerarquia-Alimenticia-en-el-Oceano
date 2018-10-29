@@ -54,6 +54,14 @@ abstract class Fish extends Marine{
       vel.y *= -0.6;
     }
   }
+  
+  //void seek(PVector target) {
+  //  PVector desired = PVector.sub(target, pos);
+  //  desired.setMag(maxSpeed);
+  //  PVector steering = PVector.sub(desired, vel);
+  //  steering.limit(maxForce);
+  //  applyForce(steering);
+  //}
 
   abstract void seek();
   abstract void hunt(ArrayList<Marine> marines);
