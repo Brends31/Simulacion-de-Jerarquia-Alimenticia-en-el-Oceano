@@ -1,5 +1,4 @@
-abstract class Fish {
-  PVector pos;
+abstract class Fish extends Marine{
   PVector vel;
   PVector acc;
   float mass;
@@ -10,15 +9,12 @@ abstract class Fish {
   color c;
 
   Fish(float x, float y, PVector vel) {
-    pos = new PVector(x, y);
+    super(x, y);
     this.vel = vel;
     acc = new PVector(0, 0);
     maxSpeed = random(3, 5);
     maxForce = random(1.2, 2);
     arrivalRadius = 200;
-    colorMode(HSB);
-    c = color(frameCount%255, 255, 255);
-    colorMode(RGB);
   }
   void applyForce(PVector force) {
     PVector f = PVector.div(force, mass);
@@ -60,5 +56,5 @@ abstract class Fish {
   }
 
   abstract void seek();
-  abstract void hunt(ArrayList<Fish> fish);
+  abstract void hunt(ArrayList<Marine> marines);
 }

@@ -7,7 +7,7 @@ class Prey extends Fish{
   }
   
   void seek(){}
-  void hunt(ArrayList<Fish> fish){
+  void hunt(ArrayList<Marine> fish){
   
   }
   

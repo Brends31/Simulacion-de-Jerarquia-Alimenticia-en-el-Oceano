@@ -9,9 +9,9 @@ class Predator extends Fish {
   void seek() {
   }
 
-  void hunt(ArrayList<Fish> fish) {
+  void hunt(ArrayList<Marine> marines) {
 
-    for (Fish target : fish) {
+    for (Marine target : marines) {
       if (target instanceof Prey) {
         PVector targetPos = target.pos;
         PVector desired = PVector.sub(targetPos, pos);
