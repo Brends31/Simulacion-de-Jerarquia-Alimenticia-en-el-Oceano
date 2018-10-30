@@ -1,5 +1,6 @@
 Sea sea;
 ArrayList<Marine> marines;
+ArrayList<Fish> preys;
 int agentCount;
 boolean campoVisible = true;
 boolean settingPreys = true;
@@ -13,6 +14,7 @@ void setup() {
   background(#27CED6);
   sea = new Sea(20, 0.2, 0.000001);
   marines = new ArrayList<Marine>();
+  preys = new ArrayList();
 }
 
 void draw() {
@@ -34,13 +36,28 @@ void draw() {
     }
     v.display();
   }
+
+  // ESTO DA UN PUTAZO DE LAG 
+  
+  //for (Marine v : marines) {
+  //  if (v instanceof Prey) {
+  //    Fish v1 = (Fish) v;
+  //    preys.add(v1);
+  //    v1.separate(preys);
+  //    v1.align(preys);
+  //    v1.cohesion(preys);
+  //    v1.update();
+  //  }
+  //  v.display();
+  //}
+
   if (mousePressed) {
     if (settingPreys) {
       marines.add(new Prey(mouseX, mouseY, PVector.random2D()));
     } else if (settingPredators) {
       marines.add(new Predator(mouseX, mouseY, PVector.random2D()));
-    } else if (settingSeaweeds){
-      marines.add(new Seaweed(mouseX,mouseY));
+    } else if (settingSeaweeds) {
+      marines.add(new Seaweed(mouseX, mouseY));
     }
   }
 }

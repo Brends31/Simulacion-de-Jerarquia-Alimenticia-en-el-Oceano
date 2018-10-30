@@ -6,6 +6,12 @@ abstract class Fish extends Marine {
   float maxSpeed;
   float maxForce;
   float arrivalRadius;
+  float separationDistance = 2;
+  float separationRatio = 5;
+  float alignmentDistance = 150;
+  float alignmentRatio = 0.5;
+  float cohesionDistance = 250;
+  float cohesionRatio = 0.02;
 
   Fish(float x, float y, PVector vel) {
     super(x, y);
@@ -53,6 +59,7 @@ abstract class Fish extends Marine {
       vel.y *= -0.6;
     }
   }
+  
 
   //void seek(PVector target) {
   //  PVector desired = PVector.sub(target, pos);
@@ -71,6 +78,62 @@ abstract class Fish extends Marine {
     PVector steering = PVector.sub(desired, vel);
     steering.limit(maxForce);
     applyForce(steering);
+  }
+
+  void separate(ArrayList<Fish> vehicles) {
+    PVector average = new PVector(0, 0);
+    int count = 0;
+    for (Fish v : vehicles) {
+      float d = PVector.dist(pos, v.pos);
+      if (this != v && d < separationDistance) {
+        PVector difference = PVector.sub(pos, v.pos);
+        difference.normalize();
+        difference.div(d);
+        average.add(difference);
+        count ++;
+      }
+    }
+    if (count > 0) {
+      average.div(count);
+      average.mult(separationRatio);
+      average.limit(maxSpeed);
+      applyForce(average);
+    }
+  }
+  void align(ArrayList<Fish> vehicles) {
+    PVector average = new PVector(0, 0);
+    int count = 0;
+    for (Fish v : vehicles) {
+      float d = PVector.dist(pos, v.pos);
+      if (this != v && d < alignmentDistance) {
+        average.add(v.vel);
+        count++;
+      }
+    }
+    if (count > 0) {
+      average.div(count);
+      average.mult(alignmentRatio);
+      average.limit(maxSpeed);
+      applyForce(average);
+    }
+  }
+  void cohesion(ArrayList<Fish> vehicles) {
+    PVector average = new PVector(0, 0);
+    int count = 0;
+    for (Fish v : vehicles) {
+      float d = PVector.dist(pos, v.pos);
+      if (this != v && d < cohesionDistance) {
+        average.add(v.pos);
+        count++;
+      }
+    }
+    if (count > 0) {
+      average.div(count);
+      PVector force = average.sub(pos);
+      force.mult(cohesionRatio);
+      force.limit(maxSpeed);
+      applyForce(force);
+    }
   }
 
   abstract void seek();
