@@ -4,7 +4,7 @@ ArrayList<Fish> preys;
 int agentCount;
 boolean campoVisible = true;
 boolean settingPreys = true;
-boolean viewRatio = true;
+boolean viewRatio = false;
 boolean settingSeaweeds = false;
 boolean settingPredators = false;
 
@@ -34,10 +34,11 @@ void draw() {
   for (Marine v : marines) {
     if (v instanceof Fish) {
       Fish v1 = (Fish) v;
+      if (viewRatio) 
+        v1.displayViewRatio();
       v1.move(marines, sea);
     }
-    if (viewRatio) 
-      //v.displayViewRatio();
+    
     v.display();
   }
 
