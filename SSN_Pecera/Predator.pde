@@ -5,7 +5,7 @@ class Predator extends Fish {
     this.c = color(255, 0, 0);
     this.mass = 25;
     this.size = mass/2 + 5;
-    viewRatio = 100;
+    viewRatio = 250;
   }
 
   void wandering() {
@@ -15,7 +15,8 @@ class Predator extends Fish {
     for (Marine target : marines) {
       if (target instanceof Prey) {
         PVector targetPos = target.pos;
-        arrive(targetPos);
+        if (PVector.dist(pos, target.pos) < viewRatio)
+          seek(targetPos);
       }
     }
   }

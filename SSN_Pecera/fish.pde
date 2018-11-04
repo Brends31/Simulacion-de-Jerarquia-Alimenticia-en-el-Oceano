@@ -29,7 +29,7 @@ abstract class Fish extends Marine {
   }
 
   void display() {
-    displayViewRatio();
+    //displayViewRatio();
 
     float ang = vel.heading();
     noStroke();
@@ -60,24 +60,24 @@ abstract class Fish extends Marine {
   }
 
   void checkBorders() {
-    if (pos.x < size/2 || pos.x > width - size/2) {
-      pos.x = constrain(pos.x, size/2, width - size/2);
+    if (pos.x < -size*10 || pos.x > width + size*10) {
+      pos.x = constrain(pos.x, -size*10, width + size*10);
       vel.x *=-0.8;
     }
-    if (pos.y < size/2 || pos.y > height - size/2) {
-      pos.y = constrain(pos.y, size/2, height - size/2);
+    if (pos.y < -size*10 || pos.y > height + size*10) {
+      pos.y = constrain(pos.y, -size*10, height + size*10);
       vel.y *= -0.6;
     }
   }
   
 
-  //void seek(PVector target) {
-  //  PVector desired = PVector.sub(target, pos);
-  //  desired.setMag(maxSpeed);
-  //  PVector steering = PVector.sub(desired, vel);
-  //  steering.limit(maxForce);
-  //  applyForce(steering);
-  //}
+  void seek(PVector target) {
+   PVector desired = PVector.sub(target, pos);
+   desired.setMag(maxSpeed);
+   PVector steering = PVector.sub(desired, vel);
+   steering.limit(maxForce);
+   applyForce(steering);
+  }
 
   void arrive(PVector targetPos) {
     PVector desired = PVector.sub(targetPos, pos);

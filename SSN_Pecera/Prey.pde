@@ -6,7 +6,7 @@ class Prey extends Fish{
     this.c = color(0,0,255);
     this.mass = 10;
     this.size = mass/2 + 5;
-    viewRatio = 250;
+    viewRatio = 150;
   }
   
   void wandering(){

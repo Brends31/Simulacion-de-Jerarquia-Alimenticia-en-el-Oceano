@@ -27,13 +27,14 @@ float extraDegrees = TWO_PI/360;
 float wall;
 
 public void setup() {
+  //fullScreen(P2D);
   
   background(0xff27CED6);
   sea = new Sea(20, 0.2f, 0.000001f);
   marines = new ArrayList<Marine>();
   preys = new ArrayList();
   
-  wall = width/25;
+  wall = width/10;
 }
 
 public void draw() {
@@ -83,7 +84,7 @@ public void move(Marine v){
   PVector f = sea.getForce(v.pos.x, v.pos.y);
   f.normalize();
   v1.wandering();
-  v1.applyForce(f);
+  //v1.applyForce(f);
   v1.hunt(marines);
   v1.update();
 }
@@ -140,7 +141,7 @@ abstract class Fish extends Marine {
   }
 
   public void display() {
-    displayViewRatio();
+    //displayViewRatio();
 
     float ang = vel.heading();
     noStroke();
@@ -171,24 +172,24 @@ abstract class Fish extends Marine {
   }
 
   public void checkBorders() {
-    if (pos.x < size/2 || pos.x > width - size/2) {
-      pos.x = constrain(pos.x, size/2, width - size/2);
+    if (pos.x < -size*10 || pos.x > width + size*10) {
+      pos.x = constrain(pos.x, -size*10, width + size*10);
       vel.x *=-0.8f;
     }
-    if (pos.y < size/2 || pos.y > height - size/2) {
-      pos.y = constrain(pos.y, size/2, height - size/2);
+    if (pos.y < -size*10 || pos.y > height + size*10) {
+      pos.y = constrain(pos.y, -size*10, height + size*10);
       vel.y *= -0.6f;
     }
   }
   
 
-  //void seek(PVector target) {
-  //  PVector desired = PVector.sub(target, pos);
-  //  desired.setMag(maxSpeed);
-  //  PVector steering = PVector.sub(desired, vel);
-  //  steering.limit(maxForce);
-  //  applyForce(steering);
-  //}
+  public void seek(PVector target) {
+   PVector desired = PVector.sub(target, pos);
+   desired.setMag(maxSpeed);
+   PVector steering = PVector.sub(desired, vel);
+   steering.limit(maxForce);
+   applyForce(steering);
+  }
 
   public void arrive(PVector targetPos) {
     PVector desired = PVector.sub(targetPos, pos);
@@ -280,7 +281,7 @@ class Predator extends Fish {
     this.c = color(255, 0, 0);
     this.mass = 25;
     this.size = mass/2 + 5;
-    viewRatio = 100;
+    viewRatio = 250;
   }
 
   public void wandering() {
@@ -290,7 +291,8 @@ class Predator extends Fish {
     for (Marine target : marines) {
       if (target instanceof Prey) {
         PVector targetPos = target.pos;
-        arrive(targetPos);
+        if (PVector.dist(pos, target.pos) < viewRatio)
+          seek(targetPos);
       }
     }
   }
@@ -303,7 +305,7 @@ class Prey extends Fish{
     this.c = color(0,0,255);
     this.mass = 10;
     this.size = mass/2 + 5;
-    viewRatio = 250;
+    viewRatio = 150;
   }
   
   public void wandering(){
@@ -432,7 +434,7 @@ class Sea {
     return new PVector(0, 0);
   }
 }
-  public void settings() {  fullScreen(P2D); }
+  public void settings() {  size(1280,720,P2D); }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "SSN_Pecera" };
     if (passedArgs != null) {

@@ -11,13 +11,14 @@ float extraDegrees = TWO_PI/360;
 float wall;
 
 void setup() {
-  fullScreen(P2D);
+  //fullScreen(P2D);
+  size(1280,720,P2D);
   background(#27CED6);
   sea = new Sea(20, 0.2, 0.000001);
   marines = new ArrayList<Marine>();
   preys = new ArrayList();
   
-  wall = width/25;
+  wall = width/10;
 }
 
 void draw() {
@@ -67,7 +68,7 @@ void move(Marine v){
   PVector f = sea.getForce(v.pos.x, v.pos.y);
   f.normalize();
   v1.wandering();
-  v1.applyForce(f);
+  //v1.applyForce(f);
   v1.hunt(marines);
   v1.update();
 }
