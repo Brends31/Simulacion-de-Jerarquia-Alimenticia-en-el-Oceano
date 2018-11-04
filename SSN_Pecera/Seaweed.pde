@@ -8,4 +8,5 @@ class Seaweed extends Marine{
     fill(c);
     ellipse(pos.x, pos.y, 10, 10);
   }
+  
 }

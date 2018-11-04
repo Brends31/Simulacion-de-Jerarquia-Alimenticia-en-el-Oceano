@@ -84,7 +84,7 @@ public void move(Marine v){
   PVector f = sea.getForce(v.pos.x, v.pos.y);
   f.normalize();
   v1.wandering();
-  //v1.applyForce(f);
+  v1.applyForce(f);
   v1.hunt(marines);
   v1.update();
 }
@@ -172,12 +172,12 @@ abstract class Fish extends Marine {
   }
 
   public void checkBorders() {
-    if (pos.x < -size*10 || pos.x > width + size*10) {
-      pos.x = constrain(pos.x, -size*10, width + size*10);
-      vel.x *=-0.8f;
+    if (pos.x < -size*5 || pos.x > width + size*5) {
+      pos.x = constrain(pos.x, -size*5, width + size*5);
+      vel.x *=-0.6f;
     }
-    if (pos.y < -size*10 || pos.y > height + size*10) {
-      pos.y = constrain(pos.y, -size*10, height + size*10);
+    if (pos.y < -size*10 || pos.y > height + size*5) {
+      pos.y = constrain(pos.y, -size*5, height + size*5);
       vel.y *= -0.6f;
     }
   }

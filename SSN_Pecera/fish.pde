@@ -60,17 +60,16 @@ abstract class Fish extends Marine {
   }
 
   void checkBorders() {
-    if (pos.x < -size*10 || pos.x > width + size*10) {
-      pos.x = constrain(pos.x, -size*10, width + size*10);
-      vel.x *=-0.8;
+    if (pos.x < -size*5 || pos.x > width + size*5) {
+      pos.x = constrain(pos.x, -size*5, width + size*5);
+      vel.x *=-0.6;
     }
-    if (pos.y < -size*10 || pos.y > height + size*10) {
-      pos.y = constrain(pos.y, -size*10, height + size*10);
+    if (pos.y < -size*10 || pos.y > height + size*5) {
+      pos.y = constrain(pos.y, -size*5, height + size*5);
       vel.y *= -0.6;
     }
   }
   
-
   void seek(PVector target) {
    PVector desired = PVector.sub(target, pos);
    desired.setMag(maxSpeed);
@@ -148,6 +147,7 @@ abstract class Fish extends Marine {
     }
   }
 
+  abstract void eat(Marine food);
   abstract void wandering();
   abstract void hunt(ArrayList<Marine> marines);
 }

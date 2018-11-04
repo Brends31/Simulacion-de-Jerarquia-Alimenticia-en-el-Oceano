@@ -62,13 +62,12 @@ void draw() {
   }
 }
 
-
 void move(Marine v){
   Fish v1 = (Fish) v;
   PVector f = sea.getForce(v.pos.x, v.pos.y);
   f.normalize();
   v1.wandering();
-  //v1.applyForce(f);
+  v1.applyForce(f);
   v1.hunt(marines);
   v1.update();
 }
