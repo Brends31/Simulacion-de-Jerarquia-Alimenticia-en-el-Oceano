@@ -102,6 +102,7 @@ abstract class Fish extends Marine {
       applyForce(average);
     }
   }
+
   void align(ArrayList<Fish> vehicles) {
     PVector average = new PVector(0, 0);
     int count = 0;
@@ -119,6 +120,7 @@ abstract class Fish extends Marine {
       applyForce(average);
     }
   }
+  
   void cohesion(ArrayList<Fish> vehicles) {
     PVector average = new PVector(0, 0);
     int count = 0;

@@ -26,18 +26,12 @@ void draw() {
   rect(0, 0, width, height);
 
   sea.update();
-  if (campoVisible)sea.display();
+  if (campoVisible)
+    sea.display();
 
   for (Marine v : marines) {
     if (v instanceof Fish) {
-      Fish v1 = (Fish) v;
-      PVector f = sea.getForce(v.pos.x, v.pos.y);
-      f.normalize();
-      v1.wandering();
-      v1.applyForce(f);
-      v1.hunt(marines);
-      
-      v1.update();
+      move(v);
     }
     v.display();
   }
@@ -65,6 +59,17 @@ void draw() {
       marines.add(new Seaweed(mouseX, mouseY));
     }
   }
+}
+
+
+void move(Marine v){
+  Fish v1 = (Fish) v;
+  PVector f = sea.getForce(v.pos.x, v.pos.y);
+  f.normalize();
+  v1.wandering();
+  v1.applyForce(f);
+  v1.hunt(marines);
+  v1.update();
 }
 
 void keyPressed() {
