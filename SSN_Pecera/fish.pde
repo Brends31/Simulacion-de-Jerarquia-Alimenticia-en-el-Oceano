@@ -29,9 +29,7 @@ abstract class Fish extends Marine {
   }
 
   void display() {
-    stroke(10);
-    noFill();
-    ellipse(pos.x,pos.y,viewRatio,viewRatio);
+    displayViewRatio();
 
     float ang = vel.heading();
     noStroke();
@@ -45,6 +43,12 @@ abstract class Fish extends Marine {
     vertex(size * 3, 0);
     endShape(CLOSE);
     popMatrix();
+  }
+
+  void displayViewRatio(){
+    stroke(10);
+    noFill();
+    ellipse(pos.x,pos.y,viewRatio,viewRatio);
   }
 
   void update() {
