@@ -6,8 +6,9 @@ class Predator extends Fish {
     this.size = mass/2 + 5;
   }
 
-  void seek() {
+  void moveAround() {
   }
+  
   void hunt(ArrayList<Marine> marines) {
     for (Marine target : marines) {
       if (target instanceof Prey) {

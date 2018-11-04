@@ -12,6 +12,7 @@ abstract class Fish extends Marine {
   float alignmentRatio = 0.5;
   float cohesionDistance = 250;
   float cohesionRatio = 0.02;
+  float hunger;
 
   Fish(float x, float y, PVector vel) {
     super(x, y);
@@ -136,6 +137,6 @@ abstract class Fish extends Marine {
     }
   }
 
-  abstract void seek();
+  abstract void moveAround();
   abstract void hunt(ArrayList<Marine> marines);
 }
