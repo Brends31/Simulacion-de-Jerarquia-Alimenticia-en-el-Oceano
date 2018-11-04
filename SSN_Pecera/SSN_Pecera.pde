@@ -31,7 +31,8 @@ void draw() {
       PVector f = sea.getForce(v.pos.x, v.pos.y);
       f.normalize();
       v1.applyForce(f);
-      v1.hunt(marines);
+      //v1.hunt(marines);
+      v1.wandering();
       v1.update();
     }
     v.display();
