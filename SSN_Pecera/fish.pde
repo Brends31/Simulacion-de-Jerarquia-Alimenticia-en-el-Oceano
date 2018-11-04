@@ -29,6 +29,10 @@ abstract class Fish extends Marine {
   }
 
   void display() {
+    stroke(10);
+    noFill();
+    ellipse(pos.x,pos.y,viewRatio,viewRatio);
+
     float ang = vel.heading();
     noStroke();
     fill(c, 100);
@@ -120,7 +124,7 @@ abstract class Fish extends Marine {
       applyForce(average);
     }
   }
-  
+
   void cohesion(ArrayList<Fish> vehicles) {
     PVector average = new PVector(0, 0);
     int count = 0;

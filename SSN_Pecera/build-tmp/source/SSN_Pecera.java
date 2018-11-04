@@ -48,7 +48,6 @@ public void draw() {
   for (Marine v : marines) {
     if (v instanceof Fish) {
       move(v);
-      
     }
     v.display();
   }
@@ -227,6 +226,10 @@ abstract class Fish extends Marine {
   }
 
   public void display() {
+    stroke(10);
+    noFill();
+    ellipse(pos.x,pos.y,viewRatio,viewRatio);
+
     float ang = vel.heading();
     noStroke();
     fill(c, 100);
@@ -318,7 +321,7 @@ abstract class Fish extends Marine {
       applyForce(average);
     }
   }
-  
+
   public void cohesion(ArrayList<Fish> vehicles) {
     PVector average = new PVector(0, 0);
     int count = 0;
