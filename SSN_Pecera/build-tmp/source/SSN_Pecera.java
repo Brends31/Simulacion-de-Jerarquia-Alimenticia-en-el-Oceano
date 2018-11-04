@@ -109,92 +109,6 @@ public void keyPressed() {
     }
   }
 }
-abstract class Marine{
-  PVector pos;
-  int c;
-  
-  Marine(float x, float y){
-    pos = new PVector(x, y);
-  }
-  
-  public abstract void display();
-  
-}
-class Predator extends Fish {
-  Predator(float x, float y, PVector vel) {
-    super(x, y, vel);
-    this.c = color(255, 0, 0);
-    this.mass = 25;
-    this.size = mass/2 + 5;
-  }
-
-  public void wandering() {
-  }
-  
-  public void hunt(ArrayList<Marine> marines) {
-    for (Marine target : marines) {
-      if (target instanceof Prey) {
-        PVector targetPos = target.pos;
-        arrive(targetPos);
-      }
-    }
-  }
-}
-class Prey extends Fish{
-  Prey(float x, float y, PVector vel){
-    super(x, y, vel);
-    this.c = color(0,0,255);
-    this.mass = 10;
-    this.size = mass/2 + 5;
-  }
-  
-  public void wandering(){
-    if (pos. x < wall) {
-      PVector desired = new PVector(maxSpeed,vel.y);
-      PVector steer = PVector.sub(desired, vel);
-      steer.limit(maxForce);
-      applyForce(steer);
-    } else if(pos.x > (width-wall)){
-      PVector desired = new PVector(-maxSpeed,vel.y);
-      PVector steer = PVector.add(desired, vel);
-      steer.limit(maxForce);
-      applyForce(steer);
-    }
-    if(pos.y < wall){
-      PVector desired = new PVector(vel.x,maxSpeed);
-      PVector steer = PVector.sub(desired, vel);
-      steer.limit(maxForce);
-      applyForce(steer);
-    } else if(pos.y > (height - wall)){
-      PVector desired = new PVector(-maxSpeed,vel.y);
-      PVector steer = PVector.sub(desired, vel);
-      steer.limit(maxForce);
-      applyForce(steer);
-    }
-  }
-  
-  public void hunt(ArrayList<Marine> marines){
-    for (Marine target : marines) {
-      if (target instanceof Seaweed) {
-        PVector targetPos = target.pos;
-        arrive(targetPos);
-      }
-    }
-  
-  }
-  
-}
-class Seaweed extends Marine{
-  Seaweed(float x, float y){
-    super(x, y);
-    this.c = color(0, 255, 0);
-  }
-  
-  public void display(){
-    fill(c);
-    ellipse(pos.x, pos.y, 10, 10);
-  }
-}
 abstract class Fish extends Marine {
   PVector vel;
   PVector acc;
@@ -210,7 +124,7 @@ abstract class Fish extends Marine {
   float cohesionDistance = 250;
   float cohesionRatio = 0.02f;
   float hunger;
-  float viewRatio = 300;
+  float viewRatio;
 
   Fish(float x, float y, PVector vel) {
     super(x, y);
@@ -226,9 +140,7 @@ abstract class Fish extends Marine {
   }
 
   public void display() {
-    stroke(10);
-    noFill();
-    ellipse(pos.x,pos.y,viewRatio,viewRatio);
+    displayViewRatio();
 
     float ang = vel.heading();
     noStroke();
@@ -242,6 +154,12 @@ abstract class Fish extends Marine {
     vertex(size * 3, 0);
     endShape(CLOSE);
     popMatrix();
+  }
+
+  public void displayViewRatio(){
+    stroke(10);
+    noFill();
+    ellipse(pos.x,pos.y,viewRatio,viewRatio);
   }
 
   public void update() {
@@ -343,6 +261,97 @@ abstract class Fish extends Marine {
 
   public abstract void wandering();
   public abstract void hunt(ArrayList<Marine> marines);
+}
+abstract class Marine{
+  PVector pos;
+  int c;
+  
+  Marine(float x, float y){
+    pos = new PVector(x, y);
+  }
+  
+  public abstract void display();
+  
+}
+class Predator extends Fish {
+
+  Predator(float x, float y, PVector vel) {
+    super(x, y, vel);
+    this.c = color(255, 0, 0);
+    this.mass = 25;
+    this.size = mass/2 + 5;
+    viewRatio = 100;
+  }
+
+  public void wandering() {
+  }
+  
+  public void hunt(ArrayList<Marine> marines) {
+    for (Marine target : marines) {
+      if (target instanceof Prey) {
+        PVector targetPos = target.pos;
+        arrive(targetPos);
+      }
+    }
+  }
+}
+class Prey extends Fish{
+
+
+  Prey(float x, float y, PVector vel){
+    super(x, y, vel);
+    this.c = color(0,0,255);
+    this.mass = 10;
+    this.size = mass/2 + 5;
+    viewRatio = 250;
+  }
+  
+  public void wandering(){
+    if (pos. x < wall) {
+      PVector desired = new PVector(maxSpeed,vel.y);
+      PVector steer = PVector.sub(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    } else if(pos.x > (width-wall)){
+      PVector desired = new PVector(-maxSpeed,vel.y);
+      PVector steer = PVector.add(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    }
+    if(pos.y < wall){
+      PVector desired = new PVector(vel.x,maxSpeed);
+      PVector steer = PVector.sub(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    } else if(pos.y > (height - wall)){
+      PVector desired = new PVector(-maxSpeed,vel.y);
+      PVector steer = PVector.sub(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    }
+  }
+  
+  public void hunt(ArrayList<Marine> marines){
+    for (Marine target : marines) {
+      if (target instanceof Seaweed) {
+        PVector targetPos = target.pos;
+        arrive(targetPos);
+      }
+    }
+  
+  }
+  
+}
+class Seaweed extends Marine{
+  Seaweed(float x, float y){
+    super(x, y);
+    this.c = color(0, 255, 0);
+  }
+  
+  public void display(){
+    fill(c);
+    ellipse(pos.x, pos.y, 10, 10);
+  }
 }
 class Sea {
   PVector[][] grid;

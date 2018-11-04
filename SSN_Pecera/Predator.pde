@@ -1,9 +1,11 @@
 class Predator extends Fish {
+
   Predator(float x, float y, PVector vel) {
     super(x, y, vel);
     this.c = color(255, 0, 0);
     this.mass = 25;
     this.size = mass/2 + 5;
+    viewRatio = 100;
   }
 
   void wandering() {
