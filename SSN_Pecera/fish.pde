@@ -147,7 +147,11 @@ abstract class Fish extends Marine {
     }
   }
 
-  abstract void eat(Marine food);
+  void eat(Marine food){
+    if(PVector.dist(food.pos, pos) == 0){
+      food.alive = false;
+    }
+  }
   abstract void wandering();
   abstract void hunt(ArrayList<Marine> marines);
 }
