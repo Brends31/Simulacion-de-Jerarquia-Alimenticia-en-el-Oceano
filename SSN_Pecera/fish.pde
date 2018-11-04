@@ -13,6 +13,7 @@ abstract class Fish extends Marine {
   float cohesionDistance = 250;
   float cohesionRatio = 0.02;
   float hunger;
+  float viewRatio = 300;
 
   Fish(float x, float y, PVector vel) {
     super(x, y);
