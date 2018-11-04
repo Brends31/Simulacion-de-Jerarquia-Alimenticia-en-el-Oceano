@@ -1,7 +1,12 @@
+
+
 Sea sea;
+
 ArrayList<Marine> marines;
 ArrayList<Fish> preys;
+
 int agentCount;
+
 boolean campoVisible = true;
 boolean settingPreys = true;
 boolean viewRatio = false;
@@ -15,7 +20,9 @@ void setup() {
   //fullScreen(P2D);
   size(1280,720,P2D);
   background(#27CED6);
+  
   sea = new Sea(20, 0.2, 0.000001);
+  
   marines = new ArrayList<Marine>();
   preys = new ArrayList();
   
