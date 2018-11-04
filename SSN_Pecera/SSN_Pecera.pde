@@ -8,6 +8,7 @@ boolean settingSeaweeds = false;
 boolean settingPredators = false;
 
 float extraDegrees = TWO_PI/360;
+float wall;
 
 void setup() {
   fullScreen(P2D);
@@ -15,6 +16,8 @@ void setup() {
   sea = new Sea(20, 0.2, 0.000001);
   marines = new ArrayList<Marine>();
   preys = new ArrayList();
+  
+  wall = width/25;
 }
 
 void draw() {
@@ -30,9 +33,10 @@ void draw() {
       Fish v1 = (Fish) v;
       PVector f = sea.getForce(v.pos.x, v.pos.y);
       f.normalize();
-      v1.applyForce(f);
-      //v1.hunt(marines);
       v1.wandering();
+      v1.applyForce(f);
+      v1.hunt(marines);
+      
       v1.update();
     }
     v.display();

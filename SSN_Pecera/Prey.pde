@@ -7,12 +7,23 @@ class Prey extends Fish{
   }
   
   void wandering(){
-    if (pos. x > 25) {
+    if (pos. x < wall) {
       PVector desired = new PVector(maxSpeed,vel.y);
       PVector steer = PVector.sub(desired, vel);
-      steer.limit(maxSpeed);
+      steer.limit(maxForce);
       applyForce(steer);
-    } else if(pos.x < (width-25)){
+    } else if(pos.x > (width-wall)){
+      PVector desired = new PVector(-maxSpeed,vel.y);
+      PVector steer = PVector.add(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    }
+    if(pos.y < wall){
+      PVector desired = new PVector(vel.x,maxSpeed);
+      PVector steer = PVector.sub(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    } else if(pos.y > (height - wall)){
       PVector desired = new PVector(-maxSpeed,vel.y);
       PVector steer = PVector.sub(desired, vel);
       steer.limit(maxForce);
