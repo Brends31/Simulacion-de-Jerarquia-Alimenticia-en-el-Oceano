@@ -45,10 +45,10 @@ abstract class Fish extends Marine {
     popMatrix();
   }
 
-  void displayViewRatio(){
+  void displayViewRatio() {
     stroke(10);
     noFill();
-    ellipse(pos.x,pos.y,viewRatio,viewRatio);
+    ellipse(pos.x, pos.y, viewRatio, viewRatio);
   }
 
   void update() {
@@ -69,13 +69,13 @@ abstract class Fish extends Marine {
       vel.y *= -0.6;
     }
   }
-  
+
   void seek(PVector target) {
-   PVector desired = PVector.sub(target, pos);
-   desired.setMag(maxSpeed);
-   PVector steering = PVector.sub(desired, vel);
-   steering.limit(maxForce);
-   applyForce(steering);
+    PVector desired = PVector.sub(target, pos);
+    desired.setMag(maxSpeed);
+    PVector steering = PVector.sub(desired, vel);
+    steering.limit(maxForce);
+    applyForce(steering);
   }
 
   void arrive(PVector targetPos) {
@@ -147,11 +147,21 @@ abstract class Fish extends Marine {
     }
   }
 
-  void eat(Marine food){
-    if(PVector.dist(food.pos, pos) == 0){
+  void eat(Marine food) {
+    if (PVector.dist(food.pos, pos) == 0) {
       food.alive = false;
     }
   }
+
+  void move(ArrayList<Marine> marines, Sea sea) {
+    PVector f = sea.getForce(pos.x, pos.y);
+    f.normalize();
+    wandering();
+    applyForce(f);
+    hunt(marines);
+    update();
+  }
+
   abstract void wandering();
   abstract void hunt(ArrayList<Marine> marines);
 }
