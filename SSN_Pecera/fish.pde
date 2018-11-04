@@ -137,6 +137,6 @@ abstract class Fish extends Marine {
     }
   }
 
-  abstract void moveAround();
+  abstract void wandering();
   abstract void hunt(ArrayList<Marine> marines);
 }

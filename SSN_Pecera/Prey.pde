@@ -6,7 +6,7 @@ class Prey extends Fish{
     this.size = mass/2 + 5;
   }
   
-  void moveAround(){
+  void wandering(){
   }
   
   void hunt(ArrayList<Marine> marines){
