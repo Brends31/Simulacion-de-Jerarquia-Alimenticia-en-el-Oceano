@@ -7,6 +7,17 @@ class Prey extends Fish{
   }
   
   void wandering(){
+    if (pos. x > 25) {
+      PVector desired = new PVector(maxSpeed,vel.y);
+      PVector steer = PVector.sub(desired, vel);
+      steer.limit(maxSpeed);
+      applyForce(steer);
+    } else if(pos.x < (width-25)){
+      PVector desired = new PVector(-maxSpeed,vel.y);
+      PVector steer = PVector.sub(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    }
   }
   
   void hunt(ArrayList<Marine> marines){
