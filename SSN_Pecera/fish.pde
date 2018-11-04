@@ -29,8 +29,6 @@ abstract class Fish extends Marine {
   }
 
   void display() {
-    //displayViewRatio();
-
     float ang = vel.heading();
     noStroke();
     fill(c, 100);

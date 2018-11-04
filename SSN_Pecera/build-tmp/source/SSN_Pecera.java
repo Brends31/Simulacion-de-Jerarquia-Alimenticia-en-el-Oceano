@@ -20,6 +20,7 @@ ArrayList<Fish> preys;
 int agentCount;
 boolean campoVisible = true;
 boolean settingPreys = true;
+boolean viewRatio = true;
 boolean settingSeaweeds = false;
 boolean settingPredators = false;
 
@@ -46,10 +47,18 @@ public void draw() {
   if (campoVisible)
     sea.display();
 
+  
+
+
   for (Marine v : marines) {
     if (v instanceof Fish) {
-      move(v);
+      
+
+      Fish v1 = (Fish) v;
+      v1.move(marines, sea);
     }
+    if (viewRatio) 
+        v.displayViewRatio();
     v.display();
   }
 
@@ -78,20 +87,10 @@ public void draw() {
   }
 }
 
-
-public void move(Marine v){
-  Fish v1 = (Fish) v;
-  PVector f = sea.getForce(v.pos.x, v.pos.y);
-  f.normalize();
-  v1.wandering();
-  v1.applyForce(f);
-  v1.hunt(marines);
-  v1.update();
-}
-
 public void keyPressed() {
   if (keyPressed) {
     campoVisible = (key == 'q' || key == 'Q') ? !campoVisible : campoVisible;
+    viewRatio = (key == 'a' || key == 'a') ? !viewRatio : viewRatio;
     if (key == 'w' || key == 'W') {
       settingPreys = true;
       settingPredators = false;
@@ -141,8 +140,6 @@ abstract class Fish extends Marine {
   }
 
   public void display() {
-    //displayViewRatio();
-
     float ang = vel.heading();
     noStroke();
     fill(c, 100);
@@ -157,10 +154,10 @@ abstract class Fish extends Marine {
     popMatrix();
   }
 
-  public void displayViewRatio(){
+  public void displayViewRatio() {
     stroke(10);
     noFill();
-    ellipse(pos.x,pos.y,viewRatio,viewRatio);
+    ellipse(pos.x, pos.y, viewRatio, viewRatio);
   }
 
   public void update() {
@@ -181,14 +178,13 @@ abstract class Fish extends Marine {
       vel.y *= -0.6f;
     }
   }
-  
 
   public void seek(PVector target) {
-   PVector desired = PVector.sub(target, pos);
-   desired.setMag(maxSpeed);
-   PVector steering = PVector.sub(desired, vel);
-   steering.limit(maxForce);
-   applyForce(steering);
+    PVector desired = PVector.sub(target, pos);
+    desired.setMag(maxSpeed);
+    PVector steering = PVector.sub(desired, vel);
+    steering.limit(maxForce);
+    applyForce(steering);
   }
 
   public void arrive(PVector targetPos) {
@@ -260,13 +256,29 @@ abstract class Fish extends Marine {
     }
   }
 
+  public void eat(Marine food) {
+    if (PVector.dist(food.pos, pos) == 0) {
+      food.alive = false;
+    }
+  }
+
+  public void move(ArrayList<Marine> marines, Sea sea) {
+    PVector f = sea.getForce(pos.x, pos.y);
+    f.normalize();
+    wandering();
+    applyForce(f);
+    if(hunger < 20) hunt(marines);
+    update();
+    hunger--;
+  }
+
   public abstract void wandering();
   public abstract void hunt(ArrayList<Marine> marines);
 }
 abstract class Marine{
   PVector pos;
   int c;
-  
+  boolean alive = true;
   Marine(float x, float y){
     pos = new PVector(x, y);
   }
@@ -282,6 +294,7 @@ class Predator extends Fish {
     this.mass = 25;
     this.size = mass/2 + 5;
     viewRatio = 250;
+    hunger = 30;
   }
 
   public void wandering() {
@@ -306,6 +319,7 @@ class Prey extends Fish{
     this.mass = 10;
     this.size = mass/2 + 5;
     viewRatio = 150;
+    hunger = 60;
   }
   
   public void wandering(){
@@ -354,6 +368,7 @@ class Seaweed extends Marine{
     fill(c);
     ellipse(pos.x, pos.y, 10, 10);
   }
+  
 }
 class Sea {
   PVector[][] grid;

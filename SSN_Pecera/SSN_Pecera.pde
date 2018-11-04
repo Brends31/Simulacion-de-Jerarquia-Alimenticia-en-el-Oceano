@@ -4,6 +4,7 @@ ArrayList<Fish> preys;
 int agentCount;
 boolean campoVisible = true;
 boolean settingPreys = true;
+boolean viewRatio = true;
 boolean settingSeaweeds = false;
 boolean settingPredators = false;
 
@@ -35,6 +36,8 @@ void draw() {
       Fish v1 = (Fish) v;
       v1.move(marines, sea);
     }
+    if (viewRatio) 
+      //v.displayViewRatio();
     v.display();
   }
 
@@ -66,6 +69,7 @@ void draw() {
 void keyPressed() {
   if (keyPressed) {
     campoVisible = (key == 'q' || key == 'Q') ? !campoVisible : campoVisible;
+    viewRatio = (key == 'a' || key == 'a') ? !viewRatio : viewRatio;
     if (key == 'w' || key == 'W') {
       settingPreys = true;
       settingPredators = false;
