@@ -14,10 +14,15 @@ import java.io.IOException;
 
 public class SSN_Pecera extends PApplet {
 
+
+
 Sea sea;
+
 ArrayList<Marine> marines;
 ArrayList<Fish> preys;
+
 int agentCount;
+
 boolean campoVisible = true;
 boolean settingPreys = true;
 boolean viewRatio = false;
@@ -31,7 +36,9 @@ public void setup() {
   //fullScreen(P2D);
   
   background(0xff27CED6);
+  
   sea = new Sea(20, 0.2f, 0.000001f);
+  
   marines = new ArrayList<Marine>();
   preys = new ArrayList();
   
@@ -287,7 +294,7 @@ class Predator extends Fish {
   Predator(float x, float y, PVector vel) {
     super(x, y, vel);
     this.c = color(255, 0, 0);
-    this.mass = 25;
+    this.mass = 5;
     this.size = mass/2 + 5;
     viewRatio = 250;
     hunger = 30;
@@ -312,7 +319,7 @@ class Prey extends Fish{
   Prey(float x, float y, PVector vel){
     super(x, y, vel);
     this.c = color(0,0,255);
-    this.mass = 10;
+    this.mass = 1;
     this.size = mass/2 + 5;
     viewRatio = 150;
     hunger = 60;
@@ -355,15 +362,17 @@ class Prey extends Fish{
   
 }
 class Seaweed extends Marine{
-  Seaweed(float x, float y){
-    super(x, y);
-    this.c = color(0, 255, 0);
-  }
-  
-  public void display(){
-    fill(c);
-    ellipse(pos.x, pos.y, 10, 10);
-  }
+	int size = 6;
+
+	Seaweed(float x, float y){
+	super(x, y);
+	this.c = color(0, 255, 0);
+	}
+
+	public void display(){
+	fill(c);
+	ellipse(pos.x, pos.y, size, size);
+	}
   
 }
 class Sea {
