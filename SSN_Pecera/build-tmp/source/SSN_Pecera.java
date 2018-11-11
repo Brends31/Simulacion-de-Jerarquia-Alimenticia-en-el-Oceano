@@ -3,6 +3,8 @@ import processing.data.*;
 import processing.event.*; 
 import processing.opengl.*; 
 
+import java.util.Iterator; 
+
 import java.util.HashMap; 
 import java.util.ArrayList; 
 import java.io.File; 
@@ -36,12 +38,12 @@ public void setup() {
   //fullScreen(P2D);
   
   background(0xff27CED6);
-  
+
   sea = new Sea(20, 0.2f, 0.000001f);
-  
+
   marines = new ArrayList<Marine>();
   preys = new ArrayList();
-  
+
   wall = width/10;
 }
 
@@ -51,6 +53,8 @@ public void draw() {
   rect(0, 0, width, height);
 
   sea.update();
+
+
   if (campoVisible)
     sea.display();
 
@@ -61,18 +65,18 @@ public void draw() {
         v1.displayViewRatio();
       v1.move(marines, sea);
     }
-    
+
     v.display();
   }
-  
+
   for (Marine v : marines) {
-   if (v instanceof Prey) {
-     Fish v1 = (Fish) v;
-     preys.add(v1);
-     v1.behave(preys);
-     v1.update();
-   }
-   v.display();
+    if (v instanceof Prey) {
+      Fish v1 = (Fish) v;
+      preys.add(v1);
+      v1.behave(preys);
+      v1.update();
+    }
+    v.display();
   }
 
   if (mousePressed) {
@@ -86,10 +90,19 @@ public void draw() {
   }
 }
 
+public void remove(){
+  Iterator<Marine> i = marines.iterator();
+  while (i.hasNext()){
+    Marine m = i.next();
+      if (m.isDead())
+        i.remove();
+    }
+}
+
 public void keyPressed() {
   if (keyPressed) {
     campoVisible = (key == 'q' || key == 'Q') ? !campoVisible : campoVisible;
-    viewRatio = (key == 'a' || key == 'a') ? !viewRatio : viewRatio;
+    viewRatio = (key == 'a' || key == 'A') ? !viewRatio : viewRatio;
     if (key == 'w' || key == 'W') {
       settingPreys = true;
       settingPredators = false;
@@ -331,15 +344,16 @@ abstract class Fish extends Marine {
   public abstract void hunt(ArrayList<Marine> marines);
 }
 abstract class Marine{
-  PVector pos;
-  int c;
-  boolean alive = true;
-  Marine(float x, float y){
-    pos = new PVector(x, y);
-  }
+	PVector pos;
+	int c;
+	boolean alive = true;
   
-  public abstract void display();
-  
+	Marine(float x, float y){
+		pos = new PVector(x, y);
+	}
+
+	public abstract void display();
+	public abstract boolean isDead();
 }
 class Predator extends Fish {
 
@@ -363,6 +377,11 @@ class Predator extends Fish {
           seek(targetPos);
       }
     }
+  }
+
+  public boolean dead(){
+    if (hunger == 0) return true;
+    return false;
   }
 }
 class Prey extends Fish{
@@ -508,7 +527,7 @@ class Sea {
     return new PVector(0, 0);
   }
 }
-  public void settings() {  size(1280,720,P2D); }
+  public void settings() {  size(1280, 720, P2D); }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "SSN_Pecera" };
     if (passedArgs != null) {

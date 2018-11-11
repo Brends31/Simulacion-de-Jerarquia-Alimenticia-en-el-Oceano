@@ -21,4 +21,9 @@ class Predator extends Fish {
       }
     }
   }
+
+  boolean dead(){
+    if (hunger == 0) return true;
+    return false;
+  }
 }

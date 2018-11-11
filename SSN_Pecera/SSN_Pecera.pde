@@ -1,5 +1,5 @@
 
-
+import java.util.Iterator;
 Sea sea;
 
 ArrayList<Marine> marines;
@@ -18,14 +18,14 @@ float wall;
 
 void setup() {
   //fullScreen(P2D);
-  size(1280,720,P2D);
+  size(1280, 720, P2D);
   background(#27CED6);
-  
+
   sea = new Sea(20, 0.2, 0.000001);
-  
+
   marines = new ArrayList<Marine>();
   preys = new ArrayList();
-  
+
   wall = width/10;
 }
 
@@ -35,6 +35,8 @@ void draw() {
   rect(0, 0, width, height);
 
   sea.update();
+
+
   if (campoVisible)
     sea.display();
 
@@ -45,18 +47,18 @@ void draw() {
         v1.displayViewRatio();
       v1.move(marines, sea);
     }
-    
+
     v.display();
   }
-  
+
   for (Marine v : marines) {
-   if (v instanceof Prey) {
-     Fish v1 = (Fish) v;
-     preys.add(v1);
-     v1.behave(preys);
-     v1.update();
-   }
-   v.display();
+    if (v instanceof Prey) {
+      Fish v1 = (Fish) v;
+      preys.add(v1);
+      v1.behave(preys);
+      v1.update();
+    }
+    v.display();
   }
 
   if (mousePressed) {
@@ -68,6 +70,15 @@ void draw() {
       marines.add(new Seaweed(mouseX, mouseY));
     }
   }
+}
+
+void remove(){
+  Iterator<Marine> i = marines.iterator();
+  while (i.hasNext()){
+    Marine m = i.next();
+      if (m.isDead())
+        i.remove();
+    }
 }
 
 void keyPressed() {

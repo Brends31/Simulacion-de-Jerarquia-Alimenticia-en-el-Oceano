@@ -44,7 +44,11 @@ class Prey extends Fish{
           arrive(targetPos);
       }
     }
-  
+  }
+
+  boolean isDead(){
+    if (hunger == 0) return true;
+    return false;
   }
   
 }
