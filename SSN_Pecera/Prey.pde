@@ -39,9 +39,9 @@ class Prey extends Fish{
   void hunt(ArrayList<Marine> marines){
     for (Marine target : marines) {
       if (target instanceof Seaweed) {
-        PVector target = target.pos;
+        PVector targetPos = target.pos;
         if (PVector.dist(pos, target.pos) < viewRatio)
-          arrive(target);
+          arrive(targetPos);
       }
     }
   

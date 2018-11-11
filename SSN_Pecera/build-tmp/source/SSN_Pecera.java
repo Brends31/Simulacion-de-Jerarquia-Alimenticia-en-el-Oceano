@@ -64,20 +64,16 @@ public void draw() {
     
     v.display();
   }
-
-  // ESTO DA UN PUTAZO DE LAG 
   
-  //for (Marine v : marines) {
-  //  if (v instanceof Prey) {
-  //    Fish v1 = (Fish) v;
-  //    preys.add(v1);
-  //    v1.separate(preys);
-  //    v1.align(preys);
-  //    v1.cohesion(preys);
-  //    v1.update();
-  //  }
-  //  v.display();
-  //}
+  for (Marine v : marines) {
+   if (v instanceof Prey) {
+     Fish v1 = (Fish) v;
+     preys.add(v1);
+     v1.behave(preys);
+     v1.update();
+   }
+   v.display();
+  }
 
   if (mousePressed) {
     if (settingPreys) {
@@ -133,7 +129,7 @@ abstract class Fish extends Marine {
     super(x, y);
     this.vel = vel;
     acc = new PVector(0, 0);
-    maxSpeed = random(3, 5);
+    maxSpeed = random(1, 3);
     maxForce = random(1.2f, 2);
     arrivalRadius = 200;
   }
@@ -201,63 +197,119 @@ abstract class Fish extends Marine {
     applyForce(steering);
   }
 
-  public void separate(ArrayList<Fish> vehicles) {
-    PVector average = new PVector(0, 0);
-    int count = 0;
-    for (Fish v : vehicles) {
-      float d = PVector.dist(pos, v.pos);
-      if (this != v && d < separationDistance) {
-        PVector difference = PVector.sub(pos, v.pos);
+  // void separate(ArrayList<Fish> fishes) {
+  //   PVector average = new PVector(0, 0);
+  //   int count = 0;
+  //   for (Fish f : fishes) {
+  //     float d = PVector.dist(pos, v.pos);
+  //     if (this != v && d < separationDistance) {
+  //       PVector difference = PVector.sub(pos, v.pos);
+  //       difference.normalize();
+  //       difference.div(d);
+  //       average.add(difference);
+  //       count ++;
+  //     }
+  //   }
+  //   if (count > 0) {
+  //     average.div(count);
+  //     average.mult(separationRatio);
+  //     average.limit(maxSpeed);
+  //     applyForce(average);
+  //   }
+  // }
+
+  // void align(ArrayList<Fish> fishes) {
+  //   PVector average = new PVector(0, 0);
+  //   int count = 0;
+  //   for (Fish f : fishes) {
+  //     float d = PVector.dist(pos, v.pos);
+  //     if (this != v && d < alignmentDistance) {
+  //       average.add(v.vel);
+  //       count++;
+  //     }
+  //   }
+  //   if (count > 0) {
+  //     average.div(count);
+  //     average.mult(alignmentRatio);
+  //     average.limit(maxSpeed);
+  //     applyForce(average);
+  //   }
+  // }
+
+  // void cohere(ArrayList<Fish> fishes) {
+  //   PVector average = new PVector(0, 0);
+  //   int count = 0;
+  //   for (Fish f : fishes) {
+  //     float d = PVector.dist(pos, v.pos);
+  //     if (this != v && d < cohesionDistance) {
+  //       average.add(v.pos);
+  //       count++;
+  //     }
+  //   }
+  //   if (count > 0) {
+  //     average.div(count);
+  //     PVector force = average.sub(pos);
+  //     force.mult(cohesionRatio);
+  //     force.limit(maxSpeed);
+  //     applyForce(force);
+  //   }
+  // }
+
+  public void behave(ArrayList<Fish> fishes){
+    PVector averageSeparation = new PVector(0, 0);
+    PVector averageAlignment = new PVector(0, 0);
+    PVector averageCohere = new PVector(0, 0);
+    int countSeparation = 0;
+    int countAlignment = 0;
+    int countCohere = 0;
+
+    // separate & align & cohere //
+    for (Fish f : fishes) {
+      float d = PVector.dist(pos, f.pos);
+      
+      if (this != f && d < separationDistance) {
+        PVector difference = PVector.sub(pos, f.pos);
         difference.normalize();
         difference.div(d);
-        average.add(difference);
-        count ++;
+        averageSeparation.add(difference);
+        countSeparation++;
       }
-    }
-    if (count > 0) {
-      average.div(count);
-      average.mult(separationRatio);
-      average.limit(maxSpeed);
-      applyForce(average);
-    }
-  }
 
-  public void align(ArrayList<Fish> vehicles) {
-    PVector average = new PVector(0, 0);
-    int count = 0;
-    for (Fish v : vehicles) {
-      float d = PVector.dist(pos, v.pos);
-      if (this != v && d < alignmentDistance) {
-        average.add(v.vel);
-        count++;
+      if (this != f && d < alignmentDistance) {
+        averageAlignment.add(f.vel);
+        countAlignment++;
       }
-    }
-    if (count > 0) {
-      average.div(count);
-      average.mult(alignmentRatio);
-      average.limit(maxSpeed);
-      applyForce(average);
-    }
-  }
 
-  public void cohesion(ArrayList<Fish> vehicles) {
-    PVector average = new PVector(0, 0);
-    int count = 0;
-    for (Fish v : vehicles) {
-      float d = PVector.dist(pos, v.pos);
-      if (this != v && d < cohesionDistance) {
-        average.add(v.pos);
-        count++;
+      if (this != f && d < cohesionDistance) {
+        averageCohere.add(f.pos);
+        countCohere++;
       }
     }
-    if (count > 0) {
-      average.div(count);
-      PVector force = average.sub(pos);
+
+    if (countSeparation > 0) {
+      averageSeparation.div(countSeparation);
+      averageSeparation.mult(separationRatio);
+      averageSeparation.limit(maxSpeed);
+      applyForce(averageSeparation);
+    }
+
+    if (countAlignment > 0) {
+      averageAlignment.div(countAlignment);
+      averageAlignment.mult(alignmentRatio);
+      averageAlignment.limit(maxSpeed);
+      applyForce(averageAlignment);
+    }
+
+    if (countCohere > 0) {
+      averageCohere.div(countCohere);
+      PVector force = averageCohere.sub(pos);
       force.mult(cohesionRatio);
       force.limit(maxSpeed);
       applyForce(force);
     }
+
   }
+
 
   public void eat(Marine food) {
     if (PVector.dist(food.pos, pos) == 0) {
@@ -314,8 +366,7 @@ class Predator extends Fish {
   }
 }
 class Prey extends Fish{
-
-
+  
   Prey(float x, float y, PVector vel){
     super(x, y, vel);
     this.c = color(0,0,255);
@@ -331,12 +382,14 @@ class Prey extends Fish{
       PVector steer = PVector.sub(desired, vel);
       steer.limit(maxForce);
       applyForce(steer);
-    } else if(pos.x > (width-wall)){
+    } 
+    else if (pos.x > (width-wall)){
       PVector desired = new PVector(-maxSpeed,vel.y);
       PVector steer = PVector.add(desired, vel);
       steer.limit(maxForce);
       applyForce(steer);
     }
+
     if(pos.y < wall){
       PVector desired = new PVector(vel.x,maxSpeed);
       PVector steer = PVector.sub(desired, vel);
@@ -354,7 +407,8 @@ class Prey extends Fish{
     for (Marine target : marines) {
       if (target instanceof Seaweed) {
         PVector targetPos = target.pos;
-        arrive(targetPos);
+        if (PVector.dist(pos, target.pos) < viewRatio)
+          arrive(targetPos);
       }
     }
   

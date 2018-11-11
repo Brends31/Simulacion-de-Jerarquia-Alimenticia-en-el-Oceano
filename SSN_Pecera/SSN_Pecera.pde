@@ -48,20 +48,16 @@ void draw() {
     
     v.display();
   }
-
-  // ESTO DA UN PUTAZO DE LAG 
   
-  //for (Marine v : marines) {
-  //  if (v instanceof Prey) {
-  //    Fish v1 = (Fish) v;
-  //    preys.add(v1);
-  //    v1.separate(preys);
-  //    v1.align(preys);
-  //    v1.cohesion(preys);
-  //    v1.update();
-  //  }
-  //  v.display();
-  //}
+  for (Marine v : marines) {
+   if (v instanceof Prey) {
+     Fish v1 = (Fish) v;
+     preys.add(v1);
+     v1.behave(preys);
+     v1.update();
+   }
+   v.display();
+  }
 
   if (mousePressed) {
     if (settingPreys) {
@@ -77,7 +73,7 @@ void draw() {
 void keyPressed() {
   if (keyPressed) {
     campoVisible = (key == 'q' || key == 'Q') ? !campoVisible : campoVisible;
-    viewRatio = (key == 'a' || key == 'a') ? !viewRatio : viewRatio;
+    viewRatio = (key == 'a' || key == 'A') ? !viewRatio : viewRatio;
     if (key == 'w' || key == 'W') {
       settingPreys = true;
       settingPredators = false;
