@@ -14,14 +14,16 @@ abstract class Fish extends Marine {
   float cohesionRatio = 0.02;
   float hunger;
   float viewRatio;
+  PImage image;
 
-  Fish(float x, float y, PVector vel) {
+  Fish(float x, float y, PVector vel, PImage image) {
     super(x, y);
     this.vel = vel;
     acc = new PVector(0, 0);
     maxSpeed = random(1, 3);
     maxForce = random(1.2, 2);
     arrivalRadius = 200;
+    this.image = image;
   }
   void applyForce(PVector force) {
     PVector f = PVector.div(force, mass);
@@ -30,12 +32,14 @@ abstract class Fish extends Marine {
 
   void display() {
     float ang = vel.heading();
+    
     noStroke();
     fill(c, 100);
     pushMatrix();
     translate(pos.x, pos.y);
     rotate(ang);
     beginShape();
+    //image(image, 1, 1, 30, 30);
     vertex(0, size);
     vertex(0, -size);
     vertex(size * 3, 0);

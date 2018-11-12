@@ -1,7 +1,7 @@
 class Predator extends Fish {
 
-  Predator(float x, float y, PVector vel) {
-    super(x, y, vel);
+  Predator(float x, float y, PVector vel,PImage image) {
+    super(x, y, vel,image);
     this.c = color(255, 0, 0);
     this.mass = 5;
     this.size = mass/2 + 5;

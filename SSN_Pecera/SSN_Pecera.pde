@@ -24,8 +24,8 @@ void setup() {
   //Cargado de Imágenes Único
   
   prey = loadImage("Prey.png");
-  //predator = loadImage("Predator.png");
-  //superPredator = loadImage("Super_Predator.png");
+  predator = loadImage("Predator.png");
+  superPredator = loadImage("SuperPredator.png");
   
   size(1280, 720, P2D);
   background(#27CED6);
@@ -70,7 +70,7 @@ void draw() {
     if (settingPreys) {
       marines.add(new Prey(mouseX, mouseY, PVector.random2D(),prey));
     } else if (settingPredators) {
-      marines.add(new Predator(mouseX, mouseY, PVector.random2D()));
+      marines.add(new Predator(mouseX, mouseY, PVector.random2D(),predator));
     } else if (settingSeaweeds) {
       marines.add(new Seaweed(mouseX, mouseY));
     }
