@@ -17,13 +17,11 @@ class Predator extends Fish {
       if (target instanceof Prey) {
         PVector targetPos = target.pos;
         if (PVector.dist(pos, target.pos) < viewRatio)
-          seek(targetPos);
+          arrive(targetPos);
+        if (PVector.dist(pos, target.pos) < 10)
+          target.setDead();
       }
     }
   }
 
-  boolean dead(){
-    if (hunger == 0) return true;
-    return false;
-  }
 }

@@ -202,8 +202,8 @@ abstract class Fish extends Marine {
 
 
   void eat(Marine food) {
-    if (PVector.dist(food.pos, pos) == 0) {
-      food.alive = false;
+    if (PVector.dist(pos, food.pos) < 10) {
+      food.setDead();
     }
   }
 

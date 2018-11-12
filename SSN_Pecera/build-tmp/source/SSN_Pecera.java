@@ -53,10 +53,11 @@ public void draw() {
   rect(0, 0, width, height);
 
   sea.update();
-
+  remove();
 
   if (campoVisible)
     sea.display();
+
 
   for (Marine v : marines) {
     if (v instanceof Fish) {
@@ -65,15 +66,10 @@ public void draw() {
         v1.displayViewRatio();
       v1.move(marines, sea);
     }
-
-    v.display();
-  }
-
-  for (Marine v : marines) {
     if (v instanceof Prey) {
       Fish v1 = (Fish) v;
       preys.add(v1);
-      v1.behave(preys);
+      //v1.behave(preys);
       v1.update();
     }
     v.display();
@@ -94,9 +90,10 @@ public void remove(){
   Iterator<Marine> i = marines.iterator();
   while (i.hasNext()){
     Marine m = i.next();
-      if (m.isDead())
-        i.remove();
-    }
+    if (m instanceof Seaweed) println("getState(): "+m.getState());
+    if (m.getState() == false)
+      i.remove();
+  }
 }
 
 public void keyPressed() {
@@ -325,8 +322,8 @@ abstract class Fish extends Marine {
 
 
   public void eat(Marine food) {
-    if (PVector.dist(food.pos, pos) == 0) {
-      food.alive = false;
+    if (PVector.dist(pos, food.pos) < 10) {
+      food.setDead();
     }
   }
 
@@ -346,14 +343,21 @@ abstract class Fish extends Marine {
 abstract class Marine{
 	PVector pos;
 	int c;
-	boolean alive = true;
+	boolean state = true; // true -> alive; false -> dead
   
 	Marine(float x, float y){
 		pos = new PVector(x, y);
 	}
 
+	public void setDead(){
+		state = false;
+	}
+
+	public boolean getState(){
+		return state;
+	}
+
 	public abstract void display();
-	public abstract boolean isDead();
 }
 class Predator extends Fish {
 
@@ -374,15 +378,13 @@ class Predator extends Fish {
       if (target instanceof Prey) {
         PVector targetPos = target.pos;
         if (PVector.dist(pos, target.pos) < viewRatio)
-          seek(targetPos);
+          arrive(targetPos);
+        if (PVector.dist(pos, target.pos) < 10)
+          target.setDead();
       }
     }
   }
 
-  public boolean dead(){
-    if (hunger == 0) return true;
-    return false;
-  }
 }
 class Prey extends Fish{
   
@@ -430,9 +432,8 @@ class Prey extends Fish{
           arrive(targetPos);
       }
     }
-  
   }
-  
+
 }
 class Seaweed extends Marine{
 	int size = 6;
@@ -443,8 +444,8 @@ class Seaweed extends Marine{
 	}
 
 	public void display(){
-	fill(c);
-	ellipse(pos.x, pos.y, size, size);
+		fill(c);
+		ellipse(pos.x, pos.y, size, size);
 	}
   
 }
