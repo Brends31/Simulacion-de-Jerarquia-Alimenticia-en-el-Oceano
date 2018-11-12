@@ -1,6 +1,6 @@
 class Prey extends Fish{
   
-  Prey(float x, float y, PVector vel){
+  Prey(float x, float y, PVector vel, PImage image){
     super(x, y, vel);
     this.c = color(0,0,255);
     this.mass = 1;

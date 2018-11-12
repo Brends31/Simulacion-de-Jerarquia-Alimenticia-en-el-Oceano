@@ -5,6 +5,9 @@ ArrayList<Marine> marines;
 ArrayList<Fish> preys;
 
 int agentCount;
+PImage prey;
+PImage predator;
+PImage superPredator;
 
 boolean campoVisible = true;
 boolean settingPreys = true;
@@ -17,6 +20,13 @@ float wall;
 
 void setup() {
   //fullScreen(P2D);
+  
+  //Cargado de Imágenes Único
+  
+  prey = loadImage("Prey.png");
+  //predator = loadImage("Predator.png");
+  //superPredator = loadImage("Super_Predator.png");
+  
   size(1280, 720, P2D);
   background(#27CED6);
 
@@ -58,7 +68,7 @@ void draw() {
 
   if (mousePressed) {
     if (settingPreys) {
-      marines.add(new Prey(mouseX, mouseY, PVector.random2D()));
+      marines.add(new Prey(mouseX, mouseY, PVector.random2D(),prey));
     } else if (settingPredators) {
       marines.add(new Predator(mouseX, mouseY, PVector.random2D()));
     } else if (settingSeaweeds) {
