@@ -1,7 +1,6 @@
-
 import java.util.Iterator;
-Sea sea;
 
+Sea sea;
 ArrayList<Marine> marines;
 ArrayList<Fish> preys;
 
@@ -51,7 +50,7 @@ void draw() {
     if (v instanceof Prey) {
       Fish v1 = (Fish) v;
       preys.add(v1);
-      //v1.behave(preys);
+      v1.behave(preys);
       v1.update();
     }
     v.display();
