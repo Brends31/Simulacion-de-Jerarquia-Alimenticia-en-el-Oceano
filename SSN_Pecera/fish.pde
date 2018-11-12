@@ -145,7 +145,7 @@ abstract class Fish extends Marine {
   //   }
   // }
 
-  void behave(ArrayList<Fish> fishes) {
+  void behave(ArrayList<Fish> fishes){
     PVector averageSeparation = new PVector(0, 0);
     PVector averageAlignment = new PVector(0, 0);
     PVector averageCohere = new PVector(0, 0);
@@ -156,7 +156,7 @@ abstract class Fish extends Marine {
     // separate & align & cohere //
     for (Fish f : fishes) {
       float d = PVector.dist(pos, f.pos);
-
+      
       if (this != f && d < separationDistance) {
         PVector difference = PVector.sub(pos, f.pos);
         difference.normalize();
@@ -197,17 +197,19 @@ abstract class Fish extends Marine {
       force.limit(maxSpeed);
       applyForce(force);
     }
+
   }
 
 
   void eat(Marine target) {
     PVector targetPos = target.pos;
-    if (PVector.dist(pos, target.pos) < 10) {
-      target.setDead();
-      setHunger();
-    }
-    if (PVector.dist(pos, target.pos) < viewRatio)
-      arrive(targetPos);
+        if(PVector.dist(pos, target.pos) < 1){
+          target.setDead();
+          hunger = 100;
+        }
+        if (PVector.dist(pos, target.pos) < viewRatio)
+          arrive(targetPos);
+      
   }
 
   void move(ArrayList<Marine> marines, Sea sea) {
@@ -215,14 +217,12 @@ abstract class Fish extends Marine {
     f.normalize();
     wandering();
     applyForce(f);
-    if (isHungry()) hunt(marines);
+    if(hunger < 20) hunt(marines);
     update();
     hunger--;
-    if (hunger == 0) setDead();
+    if(hunger == 0) setDead();
   }
-  
-  abstract void setHunger();
-  abstract boolean isHungry();
+
   abstract void wandering();
   abstract void hunt(ArrayList<Marine> marines);
 }
