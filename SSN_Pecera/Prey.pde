@@ -40,6 +40,9 @@ class Prey extends Fish{
     for (Marine target : marines) {
       if (target instanceof Seaweed) {
         PVector targetPos = target.pos;
+        if(PVector.dist(pos, target.pos) < 1){
+          target.setDead();
+        }
         if (PVector.dist(pos, target.pos) < viewRatio)
           arrive(targetPos);
       }

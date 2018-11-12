@@ -35,7 +35,7 @@ void draw() {
   rect(0, 0, width, height);
 
   sea.update();
-  remove();
+  removeMarines();
 
   if (campoVisible)
     sea.display();
@@ -68,7 +68,7 @@ void draw() {
   }
 }
 
-void remove(){
+void removeMarines(){
   Iterator<Marine> i = marines.iterator();
   while (i.hasNext()){
     Marine m = i.next();
