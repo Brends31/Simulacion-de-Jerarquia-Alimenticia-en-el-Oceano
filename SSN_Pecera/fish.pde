@@ -201,10 +201,15 @@ abstract class Fish extends Marine {
   }
 
 
-  void eat(Marine food) {
-    if (PVector.dist(pos, food.pos) < 10) {
-      food.setDead();
-    }
+  void eat(Marine target) {
+    PVector targetPos = target.pos;
+        if(PVector.dist(pos, target.pos) < 1){
+          target.setDead();
+          hunger = 100;
+        }
+        if (PVector.dist(pos, target.pos) < viewRatio)
+          arrive(targetPos);
+      
   }
 
   void move(ArrayList<Marine> marines, Sea sea) {
@@ -215,6 +220,7 @@ abstract class Fish extends Marine {
     if(hunger < 20) hunt(marines);
     update();
     hunger--;
+    if(hunger == 0) setDead();
   }
 
   abstract void wandering();

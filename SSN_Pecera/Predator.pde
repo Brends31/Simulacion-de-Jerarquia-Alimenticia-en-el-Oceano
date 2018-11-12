@@ -10,16 +10,36 @@ class Predator extends Fish {
   }
 
   void wandering() {
+    if (pos. x < wall) {
+      PVector desired = new PVector(maxSpeed,vel.y);
+      PVector steer = PVector.sub(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    } 
+    else if (pos.x > (width-wall)){
+      PVector desired = new PVector(-maxSpeed,vel.y);
+      PVector steer = PVector.add(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    }
+
+    if(pos.y < wall){
+      PVector desired = new PVector(vel.x,maxSpeed);
+      PVector steer = PVector.sub(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    } else if(pos.y > (height - wall)){
+      PVector desired = new PVector(-maxSpeed,vel.y);
+      PVector steer = PVector.sub(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    }
   }
   
   void hunt(ArrayList<Marine> marines) {
     for (Marine target : marines) {
       if (target instanceof Prey) {
-        PVector targetPos = target.pos;
-        if (PVector.dist(pos, target.pos) < viewRatio)
-          arrive(targetPos);
-        if (PVector.dist(pos, target.pos) < 10)
-          target.setDead();
+        eat(target);
       }
     }
   }
