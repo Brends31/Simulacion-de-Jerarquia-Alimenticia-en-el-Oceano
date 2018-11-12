@@ -9,6 +9,13 @@ class Prey extends Fish{
     hunger = 600;
   }
   
+  void setHunger(){
+    hunger = 600;
+  }
+  
+  boolean isHungry(){
+    return hunger<300;
+  }
   void wandering(){
     if (pos. x < wall) {
       PVector desired = new PVector(maxSpeed,vel.y);
