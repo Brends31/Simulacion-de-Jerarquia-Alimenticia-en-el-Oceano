@@ -38,12 +38,14 @@ abstract class Fish extends Marine {
     pushMatrix();
     translate(pos.x, pos.y);
     rotate(ang);
-    beginShape();
-    //image(image, 1, 1, 30, 30);
-    vertex(0, size);
-    vertex(0, -size);
-    vertex(size * 3, 0);
-    endShape(CLOSE);
+    image(image, 0, 0, 30, 30);
+    //rotate(ang);
+    //beginShape();
+    
+    //vertex(0, size);
+    //vertex(0, -size);
+    //vertex(size * 3, 0);
+    //endShape(CLOSE);
     popMatrix();
   }
 
@@ -202,7 +204,6 @@ abstract class Fish extends Marine {
       applyForce(force);
     }
   }
-
 
   void eat(Marine target) {
     PVector targetPos = target.pos;
