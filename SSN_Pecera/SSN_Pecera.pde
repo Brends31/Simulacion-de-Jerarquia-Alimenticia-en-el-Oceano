@@ -45,14 +45,18 @@ void draw() {
 
   sea.update();
   removeMarines();
+  if(frameCount % (60 * 5) == 0) addMarines();
 
   if (campoVisible)
     sea.display();
 
 
   for (Marine v : marines) {
+    
     if (v instanceof Fish) {
+      
       Fish v1 = (Fish) v;
+      print(v1.size + "\n");
       if (viewRatio) 
         v1.displayViewRatio();
       v1.move(marines, sea);
@@ -81,10 +85,20 @@ void removeMarines(){
   Iterator<Marine> i = marines.iterator();
   while (i.hasNext()){
     Marine m = i.next();
-    if (m instanceof Seaweed) println("getState(): "+m.getState());
+    
     if (m.getState() == false)
       i.remove();
   }
+}
+
+void addMarines(){
+  ArrayList<Marine> m2 = new ArrayList();
+  for(Marine m : marines){
+    m2.add(m);
+    //if(random(0, 1) < m.reproductionProb)
+      m2.add(m.reproduce());
+  }
+  marines = m2;
 }
 
 void keyPressed() {

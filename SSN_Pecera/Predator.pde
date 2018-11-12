@@ -13,6 +13,13 @@ class Predator extends Fish {
     hunger = 1000;
   }
   
+  Marine reproduce(){
+    float corrX = random(-10, 10); 
+    float corrY= random(-10, 10);
+    Marine son = new Predator(pos.x + corrX, pos.y +corrY, vel, image);
+    return son;
+  }
+  
   boolean isHungry(){
     return hunger < 500;
   }
