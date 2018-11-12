@@ -6,7 +6,15 @@ class Predator extends Fish {
     this.mass = 5;
     this.size = mass/2 + 5;
     viewRatio = 250;
-    hunger = 300;
+    hunger = 1000;
+  }
+  
+  void setHunger(){
+    hunger = 1000;
+  }
+  
+  boolean isHungry(){
+    return hunger < 500;
   }
 
   void wandering() {
