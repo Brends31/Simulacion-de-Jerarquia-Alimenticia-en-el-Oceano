@@ -19,23 +19,33 @@ public class SSN_Pecera extends PApplet {
 
 
 Sea sea;
-
 ArrayList<Marine> marines;
 ArrayList<Fish> preys;
 
 int agentCount;
+PImage prey;
+PImage predator;
+PImage superPredator;
 
-boolean campoVisible = true;
-boolean settingPreys = true;
+boolean campoVisible = false;
 boolean viewRatio = false;
+boolean settingPreys = true;
 boolean settingSeaweeds = false;
 boolean settingPredators = false;
+boolean settingSuperPredators = false;
 
 float extraDegrees = TWO_PI/360;
 float wall;
 
 public void setup() {
   //fullScreen(P2D);
+
+  //Cargado de Imágenes Único
+
+  prey = loadImage("Prey.png");
+  predator = loadImage("Predator.png");
+  superPredator = loadImage("SuperPredator.png");
+
   
   background(0xff27CED6);
 
@@ -49,19 +59,23 @@ public void setup() {
 
 public void draw() {
   int c = color(0xff27CED6);
-  fill(c, 40);
+  fill(c);
   rect(0, 0, width, height);
 
   sea.update();
-  remove();
+  removeMarines();
+  if (frameCount % (60 * 5) == 0) addMarines();
 
   if (campoVisible)
     sea.display();
 
 
   for (Marine v : marines) {
+
     if (v instanceof Fish) {
+
       Fish v1 = (Fish) v;
+      print(v1.size + "\n");
       if (viewRatio) 
         v1.displayViewRatio();
       v1.move(marines, sea);
@@ -69,7 +83,7 @@ public void draw() {
     if (v instanceof Prey) {
       Fish v1 = (Fish) v;
       preys.add(v1);
-      //v1.behave(preys);
+      v1.behave(preys);
       v1.update();
     }
     v.display();
@@ -77,23 +91,35 @@ public void draw() {
 
   if (mousePressed) {
     if (settingPreys) {
-      marines.add(new Prey(mouseX, mouseY, PVector.random2D()));
+      marines.add(new Prey(mouseX, mouseY, PVector.random2D(), prey));
     } else if (settingPredators) {
-      marines.add(new Predator(mouseX, mouseY, PVector.random2D()));
+      marines.add(new Predator(mouseX, mouseY, PVector.random2D(), predator));
+    } else if (settingSuperPredators) {
+      marines.add(new SuperPredator(mouseX, mouseY,PVector.random2D(), superPredator));
     } else if (settingSeaweeds) {
       marines.add(new Seaweed(mouseX, mouseY));
     }
   }
 }
 
-public void remove(){
+public void removeMarines() {
   Iterator<Marine> i = marines.iterator();
-  while (i.hasNext()){
+  while (i.hasNext()) {
     Marine m = i.next();
-    if (m instanceof Seaweed) println("getState(): "+m.getState());
+
     if (m.getState() == false)
       i.remove();
   }
+}
+
+public void addMarines() {
+  ArrayList<Marine> m2 = new ArrayList();
+  for (Marine m : marines) {
+    m2.add(m);
+    //if(random(0, 1) < m.reproductionProb)
+    //m2.add(m.reproduce());
+  }
+  marines = m2;
 }
 
 public void keyPressed() {
@@ -103,20 +129,265 @@ public void keyPressed() {
     if (key == 'w' || key == 'W') {
       settingPreys = true;
       settingPredators = false;
+      settingSuperPredators = false;
       settingSeaweeds = false;
     }
     if (key == 'e' || key == 'E') {
       settingPreys = false;
       settingPredators = true;
+      settingSuperPredators = false;
       settingSeaweeds = false;
     }
 
     if (key == 'r' || key == 'R') {
       settingPreys = false;
       settingPredators = false;
+      settingSuperPredators = true;
+      settingSeaweeds = false;
+    }
+
+    if (key == 't' || key == 'T') {
+      settingPreys = false;
+      settingPredators = false;
+      settingSuperPredators = false;
       settingSeaweeds = true;
     }
   }
+}
+abstract class Marine{
+	PVector pos;
+	int c;
+	boolean state = true; // true -> alive; false -> dead
+  float reproductionProb;
+  
+	Marine(float x, float y){
+		pos = new PVector(x, y);
+    reproductionProb = random(0, 0.25f);
+	}
+
+	public void setDead(){
+		state = false;
+	}
+
+	public boolean getState(){
+		return state;
+	}
+  
+  public abstract Marine reproduce();
+  
+	public abstract void display();
+}
+class Predator extends Fish {
+
+  Predator(float x, float y, PVector vel,PImage image) {
+    super(x, y, vel,image);
+    this.c = color(255, 0, 0);
+    this.mass = 5;
+    this.size = mass/2 + 5;
+    viewRatio = 600;
+    hunger = 1800;
+  }
+  
+  public void setHunger(){
+    hunger = 1800;
+  }
+  
+  public Marine reproduce(){
+    float corrX = random(-10, 10); 
+    float corrY= random(-10, 10);
+    Marine son = new Predator(pos.x + corrX, pos.y +corrY, vel, image);
+    return son;
+  }
+  
+  public boolean isHungry(){
+    return hunger < 1000;
+  }
+
+  public void wandering() {
+    if (pos. x < wall) {
+      PVector desired = new PVector(maxSpeed,vel.y);
+      PVector steer = PVector.sub(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    } 
+    else if (pos.x > (width-wall)){
+      PVector desired = new PVector(-maxSpeed,vel.y);
+      PVector steer = PVector.add(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    }
+
+    if(pos.y < wall){
+      PVector desired = new PVector(vel.x,maxSpeed);
+      PVector steer = PVector.sub(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    } else if(pos.y > (height - wall)){
+      PVector desired = new PVector(-maxSpeed,vel.y);
+      PVector steer = PVector.sub(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    }
+  }
+  
+  public void hunt(ArrayList<Marine> marines) {
+    for (Marine target : marines) {
+      if (target instanceof Prey) {
+        eat(target);
+      }
+    }
+  }
+
+}
+class Prey extends Fish{
+  
+  Prey(float x, float y, PVector vel, PImage image){
+    this(x, y, vel,image, 1);
+  }
+  
+  Prey(float x, float y, PVector vel, PImage image, float mass){
+    super(x, y, vel,image);
+    this.c = color(0,0,255);
+    this.mass = mass;
+    this.size = mass/2 + 5;
+    viewRatio = 550;
+    hunger = 1500;
+  }
+  
+  public void setHunger(){
+    hunger = 1500;
+  }
+  
+  public Marine reproduce(){
+    float corrX = random(-10, 10); 
+    float corrY= random(-10, 10);
+    float massVar = 1/(map(hunger, 0, 600, 50, 1));
+    
+    Marine son = new Prey(pos.x + corrX, pos.y + corrY, vel, image, mass * massVar);
+    return son;
+  }
+  
+  public boolean isHungry(){
+    return hunger<1000;
+  }
+  public void wandering(){
+    if (pos. x < wall) {
+      PVector desired = new PVector(maxSpeed,vel.y);
+      PVector steer = PVector.sub(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    } 
+    else if (pos.x > (width-wall)){
+      PVector desired = new PVector(-maxSpeed,vel.y);
+      PVector steer = PVector.add(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    }
+
+    if(pos.y < wall){
+      PVector desired = new PVector(vel.x,maxSpeed);
+      PVector steer = PVector.sub(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    } else if(pos.y > (height - wall)){
+      PVector desired = new PVector(-maxSpeed,vel.y);
+      PVector steer = PVector.sub(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    }
+  }
+  
+  public void hunt(ArrayList<Marine> marines){
+    for (Marine target : marines) {
+      if (target instanceof Seaweed) {
+        eat(target);
+    }
+  }
+  }
+
+}
+class Seaweed extends Marine{
+	int size = 20;
+
+	Seaweed(float x, float y){
+	super(x, y);
+	this.c = color(0, 255, 0);
+	}
+  
+  public Marine reproduce(){
+    float corrX = random(-10, 10); 
+    float corrY= random(-10, 10);
+    Marine son = new Seaweed(pos.x + corrX, pos.y+ corrY);
+    return son;
+  }
+	public void display(){
+		fill(c);
+		ellipse(pos.x, pos.y, size, size);
+	}
+  
+}
+class SuperPredator extends Fish {
+
+  SuperPredator(float x, float y, PVector vel,PImage image) {
+    super(x, y, vel,image);
+    this.c = color(255, 0, 255);
+    this.mass = 5;
+    this.size = mass/2 + 10;
+    viewRatio = 650;
+    hunger = 2000;
+  }
+  
+  public void setHunger(){
+    hunger = 2000;
+    
+  }
+  
+  public Marine reproduce(){
+    float corrX = random(-10, 10); 
+    float corrY= random(-10, 10);
+    Marine son = new SuperPredator(pos.x + corrX, pos.y +corrY, vel, image);
+    return son;
+  }
+  
+  public boolean isHungry(){
+    return hunger < 1000;
+  }
+
+  public void wandering() {
+    if (pos. x < wall) {
+      PVector desired = new PVector(maxSpeed,vel.y);
+      PVector steer = PVector.sub(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    } 
+    else if (pos.x > (width-wall)){
+      PVector desired = new PVector(-maxSpeed,vel.y);
+      PVector steer = PVector.add(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    }
+
+    if(pos.y < wall){
+      PVector desired = new PVector(vel.x,maxSpeed);
+      PVector steer = PVector.sub(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    } else if(pos.y > (height - wall)){
+      PVector desired = new PVector(-maxSpeed,vel.y);
+      PVector steer = PVector.sub(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    }
+  }
+  
+  public void hunt(ArrayList<Marine> marines) {
+    for (Marine target : marines) {
+      if (target instanceof Predator || target instanceof Prey) {
+        eat(target);
+      }
+    }
+  }
+
 }
 abstract class Fish extends Marine {
   PVector vel;
@@ -134,14 +405,16 @@ abstract class Fish extends Marine {
   float cohesionRatio = 0.02f;
   float hunger;
   float viewRatio;
+  PImage image;
 
-  Fish(float x, float y, PVector vel) {
+  Fish(float x, float y, PVector vel, PImage image) {
     super(x, y);
     this.vel = vel;
     acc = new PVector(0, 0);
-    maxSpeed = random(1, 3);
-    maxForce = random(1.2f, 2);
+    maxSpeed = 2;
+    maxForce = 1.5f;
     arrivalRadius = 200;
+    this.image = image;
   }
   public void applyForce(PVector force) {
     PVector f = PVector.div(force, mass);
@@ -150,11 +423,14 @@ abstract class Fish extends Marine {
 
   public void display() {
     float ang = vel.heading();
+    
     noStroke();
-    fill(c, 100);
+    fill(c);
     pushMatrix();
     translate(pos.x, pos.y);
     rotate(ang);
+    image(image, -20, -25, 50, 50);
+    
     beginShape();
     vertex(0, size);
     vertex(0, -size);
@@ -265,7 +541,7 @@ abstract class Fish extends Marine {
   //   }
   // }
 
-  public void behave(ArrayList<Fish> fishes){
+  public void behave(ArrayList<Fish> fishes) {
     PVector averageSeparation = new PVector(0, 0);
     PVector averageAlignment = new PVector(0, 0);
     PVector averageCohere = new PVector(0, 0);
@@ -276,7 +552,7 @@ abstract class Fish extends Marine {
     // separate & align & cohere //
     for (Fish f : fishes) {
       float d = PVector.dist(pos, f.pos);
-      
+
       if (this != f && d < separationDistance) {
         PVector difference = PVector.sub(pos, f.pos);
         difference.normalize();
@@ -317,14 +593,16 @@ abstract class Fish extends Marine {
       force.limit(maxSpeed);
       applyForce(force);
     }
-
   }
 
-
-  public void eat(Marine food) {
-    if (PVector.dist(pos, food.pos) < 10) {
-      food.setDead();
+  public void eat(Marine target) {
+    PVector targetPos = target.pos;
+    if (PVector.dist(pos, target.pos) < 10) {
+      target.setDead();
+      setHunger();
     }
+    if (PVector.dist(pos, target.pos) < viewRatio)
+      arrive(targetPos);
   }
 
   public void move(ArrayList<Marine> marines, Sea sea) {
@@ -332,122 +610,16 @@ abstract class Fish extends Marine {
     f.normalize();
     wandering();
     applyForce(f);
-    if(hunger < 20) hunt(marines);
+    if (isHungry()) hunt(marines);
     update();
     hunger--;
+    if (hunger == 0) setDead();
   }
-
+  
+  public abstract void setHunger();
+  public abstract boolean isHungry();
   public abstract void wandering();
   public abstract void hunt(ArrayList<Marine> marines);
-}
-abstract class Marine{
-	PVector pos;
-	int c;
-	boolean state = true; // true -> alive; false -> dead
-  
-	Marine(float x, float y){
-		pos = new PVector(x, y);
-	}
-
-	public void setDead(){
-		state = false;
-	}
-
-	public boolean getState(){
-		return state;
-	}
-
-	public abstract void display();
-}
-class Predator extends Fish {
-
-  Predator(float x, float y, PVector vel) {
-    super(x, y, vel);
-    this.c = color(255, 0, 0);
-    this.mass = 5;
-    this.size = mass/2 + 5;
-    viewRatio = 250;
-    hunger = 30;
-  }
-
-  public void wandering() {
-  }
-  
-  public void hunt(ArrayList<Marine> marines) {
-    for (Marine target : marines) {
-      if (target instanceof Prey) {
-        PVector targetPos = target.pos;
-        if (PVector.dist(pos, target.pos) < viewRatio)
-          arrive(targetPos);
-        if (PVector.dist(pos, target.pos) < 10)
-          target.setDead();
-      }
-    }
-  }
-
-}
-class Prey extends Fish{
-  
-  Prey(float x, float y, PVector vel){
-    super(x, y, vel);
-    this.c = color(0,0,255);
-    this.mass = 1;
-    this.size = mass/2 + 5;
-    viewRatio = 150;
-    hunger = 60;
-  }
-  
-  public void wandering(){
-    if (pos. x < wall) {
-      PVector desired = new PVector(maxSpeed,vel.y);
-      PVector steer = PVector.sub(desired, vel);
-      steer.limit(maxForce);
-      applyForce(steer);
-    } 
-    else if (pos.x > (width-wall)){
-      PVector desired = new PVector(-maxSpeed,vel.y);
-      PVector steer = PVector.add(desired, vel);
-      steer.limit(maxForce);
-      applyForce(steer);
-    }
-
-    if(pos.y < wall){
-      PVector desired = new PVector(vel.x,maxSpeed);
-      PVector steer = PVector.sub(desired, vel);
-      steer.limit(maxForce);
-      applyForce(steer);
-    } else if(pos.y > (height - wall)){
-      PVector desired = new PVector(-maxSpeed,vel.y);
-      PVector steer = PVector.sub(desired, vel);
-      steer.limit(maxForce);
-      applyForce(steer);
-    }
-  }
-  
-  public void hunt(ArrayList<Marine> marines){
-    for (Marine target : marines) {
-      if (target instanceof Seaweed) {
-        PVector targetPos = target.pos;
-        if (PVector.dist(pos, target.pos) < viewRatio)
-          arrive(targetPos);
-      }
-    }
-  }
-
-}
-class Seaweed extends Marine{
-	int size = 6;
-
-	Seaweed(float x, float y){
-	super(x, y);
-	this.c = color(0, 255, 0);
-	}
-
-	public void display(){
-		fill(c);
-		ellipse(pos.x, pos.y, size, size);
-	}
-  
 }
 class Sea {
   PVector[][] grid;
