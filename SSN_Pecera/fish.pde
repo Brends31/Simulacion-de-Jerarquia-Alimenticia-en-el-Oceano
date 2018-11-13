@@ -92,64 +92,6 @@ abstract class Fish extends Marine {
     applyForce(steering);
   }
 
-  // void separate(ArrayList<Fish> fishes) {
-  //   PVector average = new PVector(0, 0);
-  //   int count = 0;
-  //   for (Fish f : fishes) {
-  //     float d = PVector.dist(pos, v.pos);
-  //     if (this != v && d < separationDistance) {
-  //       PVector difference = PVector.sub(pos, v.pos);
-  //       difference.normalize();
-  //       difference.div(d);
-  //       average.add(difference);
-  //       count ++;
-  //     }
-  //   }
-  //   if (count > 0) {
-  //     average.div(count);
-  //     average.mult(separationRatio);
-  //     average.limit(maxSpeed);
-  //     applyForce(average);
-  //   }
-  // }
-
-  // void align(ArrayList<Fish> fishes) {
-  //   PVector average = new PVector(0, 0);
-  //   int count = 0;
-  //   for (Fish f : fishes) {
-  //     float d = PVector.dist(pos, v.pos);
-  //     if (this != v && d < alignmentDistance) {
-  //       average.add(v.vel);
-  //       count++;
-  //     }
-  //   }
-  //   if (count > 0) {
-  //     average.div(count);
-  //     average.mult(alignmentRatio);
-  //     average.limit(maxSpeed);
-  //     applyForce(average);
-  //   }
-  // }
-
-  // void cohere(ArrayList<Fish> fishes) {
-  //   PVector average = new PVector(0, 0);
-  //   int count = 0;
-  //   for (Fish f : fishes) {
-  //     float d = PVector.dist(pos, v.pos);
-  //     if (this != v && d < cohesionDistance) {
-  //       average.add(v.pos);
-  //       count++;
-  //     }
-  //   }
-  //   if (count > 0) {
-  //     average.div(count);
-  //     PVector force = average.sub(pos);
-  //     force.mult(cohesionRatio);
-  //     force.limit(maxSpeed);
-  //     applyForce(force);
-  //   }
-  // }
-
   void behave(ArrayList<Fish> fishes) {
     PVector averageSeparation = new PVector(0, 0);
     PVector averageAlignment = new PVector(0, 0);
