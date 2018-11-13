@@ -1,11 +1,10 @@
 class Seaweed extends Marine{
-	int size = 6;
+	int size = 20;
 
 	Seaweed(float x, float y){
 	super(x, y);
 	this.c = color(0, 255, 0);
 	}
-  
   
   Marine reproduce(){
     float corrX = random(-10, 10); 

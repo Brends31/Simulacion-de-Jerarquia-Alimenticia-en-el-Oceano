@@ -20,8 +20,8 @@ abstract class Fish extends Marine {
     super(x, y);
     this.vel = vel;
     acc = new PVector(0, 0);
-    maxSpeed = random(1, 3);
-    maxForce = random(1.2, 2);
+    maxSpeed = 2;
+    maxForce = 1.5;
     arrivalRadius = 200;
     this.image = image;
   }
@@ -34,12 +34,11 @@ abstract class Fish extends Marine {
     float ang = vel.heading();
     
     noStroke();
-    fill(c, 100);
+    fill(c);
     pushMatrix();
     translate(pos.x, pos.y);
     rotate(ang);
-    //image(image, 0, 0, 30, 30);
-    //rotate(ang);
+    image(image, 0, 0, 50, 50);
     beginShape();
     
     vertex(0, size);

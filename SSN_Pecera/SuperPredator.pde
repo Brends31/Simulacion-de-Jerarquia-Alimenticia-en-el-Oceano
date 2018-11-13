@@ -1,35 +1,31 @@
-class Prey extends Fish{
-  
-  Prey(float x, float y, PVector vel, PImage image){
-    this(x, y, vel,image, 1);
-  }
-  
-  Prey(float x, float y, PVector vel, PImage image, float mass){
+class SuperPredator extends Fish {
+
+  SuperPredator(float x, float y, PVector vel,PImage image) {
     super(x, y, vel,image);
-    this.c = color(0,0,255);
-    this.mass = mass;
-    this.size = mass/2 + 5;
-    viewRatio = 550;
-    hunger = 1500;
+    this.c = color(255, 0, 255);
+    this.mass = 5;
+    this.size = mass/2 + 10;
+    viewRatio = 650;
+    hunger = 2000;
   }
   
   void setHunger(){
-    hunger = 1500;
+    hunger = 2000;
+    
   }
   
   Marine reproduce(){
     float corrX = random(-10, 10); 
     float corrY= random(-10, 10);
-    float massVar = 1/(map(hunger, 0, 600, 50, 1));
-    
-    Marine son = new Prey(pos.x + corrX, pos.y + corrY, vel, image, mass * massVar);
+    Marine son = new SuperPredator(pos.x + corrX, pos.y +corrY, vel, image);
     return son;
   }
   
   boolean isHungry(){
-    return hunger<1000;
+    return hunger < 1000;
   }
-  void wandering(){
+
+  void wandering() {
     if (pos. x < wall) {
       PVector desired = new PVector(maxSpeed,vel.y);
       PVector steer = PVector.sub(desired, vel);
@@ -56,12 +52,12 @@ class Prey extends Fish{
     }
   }
   
-  void hunt(ArrayList<Marine> marines){
+  void hunt(ArrayList<Marine> marines) {
     for (Marine target : marines) {
-      if (target instanceof Seaweed) {
+      if (target instanceof Predator || target instanceof Prey) {
         eat(target);
+      }
     }
-  }
   }
 
 }

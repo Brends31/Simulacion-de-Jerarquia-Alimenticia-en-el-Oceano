@@ -5,12 +5,12 @@ class Predator extends Fish {
     this.c = color(255, 0, 0);
     this.mass = 5;
     this.size = mass/2 + 5;
-    viewRatio = 250;
-    hunger = 1000;
+    viewRatio = 600;
+    hunger = 1800;
   }
   
   void setHunger(){
-    hunger = 1000;
+    hunger = 1800;
   }
   
   Marine reproduce(){
@@ -21,7 +21,7 @@ class Predator extends Fish {
   }
   
   boolean isHungry(){
-    return hunger < 500;
+    return hunger < 1000;
   }
 
   void wandering() {
