@@ -53,11 +53,20 @@ class SuperPredator extends Fish {
   }
   
   void hunt(ArrayList<Marine> marines) {
+    Fish newTarget = null;
     for (Marine target : marines) {
       if (target instanceof Predator || target instanceof Prey) {
-        eat(target);
+        if (newTarget == null) { 
+          newTarget = (Fish) target;
+        } else {
+          if (PVector.dist(pos, newTarget.pos) > PVector.dist(pos, target.pos)) {
+            newTarget = (Fish) target;
+          }
+        }
       }
     }
+    if(newTarget!=null)
+    eat(newTarget);
   }
 
 }

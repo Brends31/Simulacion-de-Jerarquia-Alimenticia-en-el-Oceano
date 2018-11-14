@@ -52,11 +52,20 @@ class Predator extends Fish {
   }
   
   void hunt(ArrayList<Marine> marines) {
+    Prey newTarget = null;
     for (Marine target : marines) {
       if (target instanceof Prey) {
-        eat(target);
+        if (newTarget == null) { 
+          newTarget = (Prey) target;
+        } else {
+          if (PVector.dist(pos, newTarget.pos) > PVector.dist(pos, target.pos)) {
+            newTarget = (Prey) target;
+          }
+        }
       }
     }
+    if(newTarget!=null)
+    eat(newTarget);
   }
 
 }

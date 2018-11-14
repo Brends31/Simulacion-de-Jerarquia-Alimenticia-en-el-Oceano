@@ -57,7 +57,7 @@ void draw() {
     if (v instanceof Fish) {
 
       Fish v1 = (Fish) v;
-      print(v1.size + "\n");
+      //print(v1.size + "\n");
       if (viewRatio) 
         v1.displayViewRatio();
       v1.move(marines, sea);
