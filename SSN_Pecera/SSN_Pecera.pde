@@ -36,8 +36,8 @@ void setup() {
   marines = new ArrayList<Marine>();
   preys = new ArrayList();
 
-  wallx = width/10;
-  wally = height/10;
+  wallx = -width/10;
+  wally = -height/10;
 }
 
 void draw() {
