@@ -10,7 +10,7 @@ class Prey extends Fish {
     this.mass = mass;
     this.size = mass/2 + 5;
     viewRatio = 550;
-    hunger = 1500;
+    
   }
 
   void setHunger() {

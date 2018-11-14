@@ -6,11 +6,11 @@ abstract class Fish extends Marine {
   float maxSpeed;
   float maxForce;
   float arrivalRadius;
-  float separationDistance = 2;
-  float separationRatio = 5;
-  float alignmentDistance = 150;
-  float alignmentRatio = 0.5;
-  float cohesionDistance = 250;
+  float separationDistance = 750;
+  float separationRatio = 75;
+  float alignmentDistance = 250;
+  float alignmentRatio = 0.025;
+  float cohesionDistance = 100;
   float cohesionRatio = 0.02;
   float hunger;
   float viewRatio;
@@ -24,6 +24,7 @@ abstract class Fish extends Marine {
     maxForce = 1.5;
     arrivalRadius = 200;
     this.image = image;
+    setHunger();
   }
   void applyForce(PVector force) {
     PVector f = PVector.div(force, mass);
@@ -67,7 +68,7 @@ abstract class Fish extends Marine {
       pos.x = constrain(pos.x, -size*5, width + size*5);
       vel.x *=-0.6;
     }
-    if (pos.y < -size*10 || pos.y > height + size*5) {
+    if (pos.y < -size*5 || pos.y > height + size*5) {
       pos.y = constrain(pos.y, -size*5, height + size*5);
       vel.y *= -0.6;
     }

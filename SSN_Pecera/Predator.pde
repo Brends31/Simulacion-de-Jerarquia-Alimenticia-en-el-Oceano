@@ -6,7 +6,7 @@ class Predator extends Fish {
     this.mass = 5;
     this.size = mass/2 + 5;
     viewRatio = 600;
-    hunger = 1800;
+    
   }
   
   void setHunger(){

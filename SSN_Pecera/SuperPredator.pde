@@ -6,7 +6,7 @@ class SuperPredator extends Fish {
     this.mass = 5;
     this.size = mass/2 + 10;
     viewRatio = 650;
-    hunger = 2000;
+    
   }
   
   void setHunger(){
