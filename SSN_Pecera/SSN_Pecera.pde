@@ -17,7 +17,7 @@ boolean settingPredators = false;
 boolean settingSuperPredators = false;
 
 float extraDegrees = TWO_PI/360;
-float wall;
+float wallx, wally;
 
 void setup() {
   //fullScreen(P2D);
@@ -36,7 +36,8 @@ void setup() {
   marines = new ArrayList<Marine>();
   preys = new ArrayList();
 
-  wall = width/10;
+  wallx = width/10;
+  wally = height/10;
 }
 
 void draw() {

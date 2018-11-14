@@ -33,14 +33,14 @@ abstract class Fish extends Marine {
 
   void display() {
     float ang = vel.heading();
-    
+
     noStroke();
     fill(c);
     pushMatrix();
     translate(pos.x, pos.y);
     rotate(ang);
     image(image, -20, -25, 50, 50);
-    
+
     beginShape();
     vertex(0, size);
     vertex(0, -size);
@@ -167,36 +167,35 @@ abstract class Fish extends Marine {
     hunger--;
     if (hunger == 0) setDead();
   }
-  
-  void wandering(){
-    if (pos. x < wall) {
-      PVector desired = new PVector(maxSpeed,vel.y);
+
+  void wandering() {
+    if (pos.x < wallx) {
+      PVector desired = new PVector(maxSpeed, vel.y);
       PVector steer = PVector.sub(desired, vel);
       steer.limit(maxForce);
       applyForce(steer);
-    } 
-    else if (pos.x > (width-wall)){
-      PVector desired = new PVector(-maxSpeed,vel.y);
+    } else if (pos.x > (width-wallx)) {
+      PVector desired = new PVector(-maxSpeed, vel.y);
       PVector steer = PVector.add(desired, vel);
       steer.limit(maxForce);
       applyForce(steer);
     }
 
-    if(pos.y < wall){
-      PVector desired = new PVector(maxSpeed,vel.x);
+    if (pos.y < wally) {
+      PVector desired = new PVector(vel.x, maxSpeed);
       PVector steer = PVector.sub(desired, vel);
       steer.limit(maxForce);
       applyForce(steer);
-    } else if(pos.y > (height - wall)){
-      PVector desired = new PVector(-maxSpeed,vel.x);
+    } else if (pos.y > (height - wally)) {
+      PVector desired = new PVector(vel.x, -maxSpeed);
       PVector steer = PVector.sub(desired, vel);
       steer.limit(maxForce);
       applyForce(steer);
     }
   }
-  
+
   abstract void setHunger();
   abstract boolean isHungry();
-  
+
   abstract void hunt(ArrayList<Marine> marines);
 }
