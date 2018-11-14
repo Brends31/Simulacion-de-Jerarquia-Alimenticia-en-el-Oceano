@@ -39,12 +39,12 @@ class Predator extends Fish {
     }
 
     if(pos.y < wall){
-      PVector desired = new PVector(vel.x,maxSpeed);
+      PVector desired = new PVector(maxSpeed,vel.x);
       PVector steer = PVector.sub(desired, vel);
       steer.limit(maxForce);
       applyForce(steer);
     } else if(pos.y > (height - wall)){
-      PVector desired = new PVector(-maxSpeed,vel.y);
+      PVector desired = new PVector(-maxSpeed,vel.x);
       PVector steer = PVector.sub(desired, vel);
       steer.limit(maxForce);
       applyForce(steer);

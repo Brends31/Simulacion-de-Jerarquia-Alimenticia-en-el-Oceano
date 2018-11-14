@@ -168,8 +168,35 @@ abstract class Fish extends Marine {
     if (hunger == 0) setDead();
   }
   
+  void wandering(){
+    if (pos. x < wall) {
+      PVector desired = new PVector(maxSpeed,vel.y);
+      PVector steer = PVector.sub(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    } 
+    else if (pos.x > (width-wall)){
+      PVector desired = new PVector(-maxSpeed,vel.y);
+      PVector steer = PVector.add(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    }
+
+    if(pos.y < wall){
+      PVector desired = new PVector(maxSpeed,vel.x);
+      PVector steer = PVector.sub(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    } else if(pos.y > (height - wall)){
+      PVector desired = new PVector(-maxSpeed,vel.x);
+      PVector steer = PVector.sub(desired, vel);
+      steer.limit(maxForce);
+      applyForce(steer);
+    }
+  }
+  
   abstract void setHunger();
   abstract boolean isHungry();
-  abstract void wandering();
+  
   abstract void hunt(ArrayList<Marine> marines);
 }
