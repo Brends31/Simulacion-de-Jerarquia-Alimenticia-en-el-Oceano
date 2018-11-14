@@ -32,7 +32,7 @@ class Sea {
       for (int c = 0; c < columns; c++) {
         float angle = noise((float)r * noiseResolution, (float)c * noiseResolution, directionNoiseOffset);
         angle = map(angle, 0, 1, 0, TWO_PI);
-        float mag = 2;
+        float mag = .01;
         grid[r][c] = PVector.fromAngle(angle+extraDegrees);
         grid[r][c].mult(mag);
         //grid[r][c].set(cos(radians(angle)) * mag, sin(radians(angle)) * mag); // oh geez rick idk
