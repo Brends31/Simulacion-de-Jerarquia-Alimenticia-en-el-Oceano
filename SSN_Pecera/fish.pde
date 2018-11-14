@@ -6,10 +6,10 @@ abstract class Fish extends Marine {
   float maxSpeed;
   float maxForce;
   float arrivalRadius;
-  float separationDistance = 750;
-  float separationRatio = 75;
-  float alignmentDistance = 250;
-  float alignmentRatio = 0.025;
+  float separationDistance = 1000;
+  float separationRatio = 100;
+  float alignmentDistance = 500;
+  float alignmentRatio = 0.25;
   float cohesionDistance = 100;
   float cohesionRatio = 0.02;
   float hunger;
