@@ -54,6 +54,7 @@ abstract class Fish extends Marine {
     vertex(0, -size);
     vertex(size * 3, 0);
     endShape(CLOSE);*/
+
     popMatrix();
   }
 
