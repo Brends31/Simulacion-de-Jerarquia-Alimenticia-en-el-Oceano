@@ -64,13 +64,14 @@ void draw() {
       Fish v1 = (Fish) v;
       if (viewRatio) v1.displayViewRatio();
       v1.move(marines, sea);
+      
+      if (v instanceof Prey) {
+        preys.add(v1);
+        v1.behave(preys);
+        
+      }
     }
-    if (v instanceof Prey) {
-      Fish v1 = (Fish) v;
-      preys.add(v1);
-      v1.behave(preys);
-      v1.update();
-    }
+
     v.display();
   }
 
@@ -100,71 +101,71 @@ void addMarines() {
   ArrayList<Marine> m2 = new ArrayList();
   for (Marine m : marines) {
     m2.add(m);
-    if(random(0, 1) < m.reproductionProb) m2.add(m.reproduce());
+    if (random(0, 1) < m.reproductionProb) m2.add(m.reproduce());
   }
   marines = m2;
 }
 
-void initControls(){
+void initControls() {
   cp5 = new ControlP5(this);
 
   cp5.addButton("seaweed")
-     .setPosition(20,10)
-     .setSize(65,20);
+    .setPosition(20, 10)
+    .setSize(65, 20);
 
   cp5.addButton("prey")
-     .setPosition(100,10)
-     .setSize(65,20);
+    .setPosition(100, 10)
+    .setSize(65, 20);
 
   cp5.addButton("predator")
-     .setPosition(180,10)
-     .setSize(65,20);
+    .setPosition(180, 10)
+    .setSize(65, 20);
 
   cp5.addButton("superPredator")
-     .setPosition(260,10)
-     .setSize(65,20);
+    .setPosition(260, 10)
+    .setSize(65, 20);
 
   cp5.addButton("flowfield")
-     .setPosition(340,10)
-     .setSize(65,20);
+    .setPosition(340, 10)
+    .setSize(65, 20);
 
   cp5.addButton("fishratio")
-     .setPosition(420,10)
-     .setSize(65,20);
+    .setPosition(420, 10)
+    .setSize(65, 20);
 }
 
-void seaweed(){
+void seaweed() {
   settingPreys = false;
   settingPredators = false;
   settingSuperPredators = false;
   settingSeaweeds = true;
 }
 
-void prey(){
+void prey() {
   settingPreys = true;
   settingPredators = false;
   settingSuperPredators = false;
   settingSeaweeds = false;
 }
 
-void predator(){
+void predator() {
   settingPreys = false;
   settingPredators = true;
   settingSuperPredators = false;
   settingSeaweeds = false;
 }
 
-void superPredator(){
+void superPredator() {
   settingPreys = false;
   settingPredators = false;
   settingSuperPredators = true;
   settingSeaweeds = false;
 }
 
-void flowfield(){
+void flowfield() {
   campoVisible = !campoVisible;
 }
 
-void fishratio(){
+void fishratio() {
   viewRatio = !viewRatio;
 }
