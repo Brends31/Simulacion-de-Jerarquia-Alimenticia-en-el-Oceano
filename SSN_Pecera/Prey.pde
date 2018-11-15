@@ -15,6 +15,8 @@ class Prey extends Fish {
   void setHunger() {
     hunger = 1500;
   }
+  
+  
 
   Marine reproduce() {
     float corrX = random(-10, 10); 
@@ -32,7 +34,7 @@ class Prey extends Fish {
   void hunt(ArrayList<Marine> marines) {
     Seaweed newTarget = null;
     for (Marine target : marines) {
-      if (target instanceof Seaweed) {
+      if (target instanceof Seaweed && isHungry()) {
         if (newTarget == null) { 
           newTarget = (Seaweed) target;
         } else {
@@ -40,6 +42,8 @@ class Prey extends Fish {
             newTarget = (Seaweed) target;
           }
         }
+      } else if(target instanceof Predator || target instanceof SuperPredator){
+        repel(target.pos);
       }
     }
     if (newTarget!=null)

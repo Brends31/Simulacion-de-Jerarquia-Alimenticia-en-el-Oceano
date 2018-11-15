@@ -28,7 +28,7 @@ class SuperPredator extends Fish {
   void hunt(ArrayList<Marine> marines) {
     Fish newTarget = null;
     for (Marine target : marines) {
-      if (target instanceof Predator || target instanceof Prey) {
+      if ((target instanceof Predator || target instanceof Prey) && isHungry()) {
         if (newTarget == null) { 
           newTarget = (Fish) target;
         } else {

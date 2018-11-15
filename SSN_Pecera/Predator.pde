@@ -28,7 +28,7 @@ class Predator extends Fish {
   void hunt(ArrayList<Marine> marines) {
     Prey newTarget = null;
     for (Marine target : marines) {
-      if (target instanceof Prey) {
+      if (target instanceof Prey && isHungry()) {
         if (newTarget == null) { 
           newTarget = (Prey) target;
         } else {

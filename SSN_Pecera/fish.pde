@@ -162,7 +162,7 @@ abstract class Fish extends Marine {
     f.normalize();
     wandering();
     applyForce(f);
-    if (isHungry()) hunt(marines);
+    hunt(marines);
     update();
     hunger--;
     if (hunger == 0) setDead();
