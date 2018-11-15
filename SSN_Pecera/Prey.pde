@@ -15,8 +15,8 @@ class Prey extends Fish {
   void setHunger() {
     hunger = 1500;
   }
-  
-  
+
+
 
   Marine reproduce() {
     float corrX = random(-10, 10); 
@@ -34,16 +34,19 @@ class Prey extends Fish {
   void hunt(ArrayList<Marine> marines) {
     Seaweed newTarget = null;
     for (Marine target : marines) {
-      if (target instanceof Seaweed && isHungry()) {
-        if (newTarget == null) { 
-          newTarget = (Seaweed) target;
-        } else {
-          if (PVector.dist(pos, newTarget.pos) > PVector.dist(pos, target.pos)) {
+      if (PVector.dist(target.pos, pos) < viewRatio) {
+        if (target instanceof Seaweed && isHungry()) {
+          if (newTarget == null) { 
             newTarget = (Seaweed) target;
+          } else {
+            if (PVector.dist(pos, newTarget.pos) > PVector.dist(pos, target.pos)) {
+              newTarget = (Seaweed) target;
+            }
           }
+        } else if (target instanceof Predator || target instanceof SuperPredator) {
+          //repel(target.pos);
+          //Aqui va el escape
         }
-      } else if(target instanceof Predator || target instanceof SuperPredator){
-        repel(target.pos);
       }
     }
     if (newTarget!=null)
