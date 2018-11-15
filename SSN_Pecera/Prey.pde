@@ -36,7 +36,8 @@ class Prey extends Fish {
         if (target instanceof Seaweed && isHungry()) {
           if (newTarget == null) { 
             newTarget = (Seaweed) target;
-          } else {
+          } 
+          else {
             if (PVector.dist(pos, newTarget.pos) > PVector.dist(pos, target.pos)) {
               newTarget = (Seaweed) target;
             }

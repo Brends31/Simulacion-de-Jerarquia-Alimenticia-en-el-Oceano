@@ -91,12 +91,14 @@ public void draw() {
       if (v1 instanceof Prey) {
         preys.add(v1);
         v1.behave(preys);
-      }else if(v1 instanceof Predator){
+      }
+      else if(v1 instanceof Predator){
         predators.add(v1);
         v1.behave(predators);
-      } else if(v1 instanceof SuperPredator){
+      } 
+      else if(v1 instanceof SuperPredator){
         superpredators.add(v1);
-        v1.behave(predators);
+        v1.behave(superpredators);
       }
     }
 
@@ -306,7 +308,8 @@ class Prey extends Fish {
         if (target instanceof Seaweed && isHungry()) {
           if (newTarget == null) { 
             newTarget = (Seaweed) target;
-          } else {
+          } 
+          else {
             if (PVector.dist(pos, newTarget.pos) > PVector.dist(pos, target.pos)) {
               newTarget = (Seaweed) target;
             }
@@ -502,7 +505,7 @@ abstract class Fish extends Marine {
     }
 
     averageSeparation.mult(separationRatio);
-    averageSeparation.limit(maxSpeed);
+    averageSeparation.limit(maxSpeed/5);
     applyForce(averageSeparation);
 
   }

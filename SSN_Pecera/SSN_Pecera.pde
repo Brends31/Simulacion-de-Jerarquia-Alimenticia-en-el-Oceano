@@ -72,12 +72,14 @@ void draw() {
       if (v1 instanceof Prey) {
         preys.add(v1);
         v1.behave(preys);
-      }else if(v1 instanceof Predator){
+      }
+      else if(v1 instanceof Predator){
         predators.add(v1);
         v1.behave(predators);
-      } else if(v1 instanceof SuperPredator){
+      } 
+      else if(v1 instanceof SuperPredator){
         superpredators.add(v1);
-        v1.behave(predators);
+        v1.behave(superpredators);
       }
     }
 

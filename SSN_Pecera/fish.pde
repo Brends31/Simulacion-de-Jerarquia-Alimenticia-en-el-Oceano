@@ -114,7 +114,7 @@ abstract class Fish extends Marine {
     }
 
     averageSeparation.mult(separationRatio);
-    averageSeparation.limit(maxSpeed);
+    averageSeparation.limit(maxSpeed/5);
     applyForce(averageSeparation);
 
   }
