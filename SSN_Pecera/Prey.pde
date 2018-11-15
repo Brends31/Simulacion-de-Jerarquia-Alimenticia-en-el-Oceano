@@ -13,7 +13,7 @@ class Prey extends Fish {
   }
 
   void setHunger() {
-    hunger += 750;
+    hunger += 700;
   }
 
 
