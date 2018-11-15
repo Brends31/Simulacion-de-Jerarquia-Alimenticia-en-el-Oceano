@@ -14,7 +14,7 @@ PImage superPredator;
 
 boolean campoVisible = false;
 boolean viewRatio = false;
-boolean settingPreys = true;
+boolean settingPreys = false;
 boolean settingSeaweeds = false;
 boolean settingPredators = false;
 boolean settingSuperPredators = false;
@@ -26,7 +26,6 @@ void setup() {
   //fullScreen(P2D);
 
   //Cargado de Imágenes Único
-
   prey = loadImage("Prey.png");
   predator = loadImage("Predator.png");
   superPredator = loadImage("SuperPredator.png");
@@ -63,9 +62,7 @@ void draw() {
     if (v instanceof Fish) {
 
       Fish v1 = (Fish) v;
-      //print(v1.size + "\n");
-      if (viewRatio) 
-        v1.displayViewRatio();
+      if (viewRatio) v1.displayViewRatio();
       v1.move(marines, sea);
     }
     if (v instanceof Prey) {
@@ -77,7 +74,7 @@ void draw() {
     v.display();
   }
 
-  if (mousePressed && mouseY > 25) {
+  if (mousePressed && mouseY > 40) {
     if (settingPreys) {
       marines.add(new Prey(mouseX, mouseY, PVector.random2D(), prey));
     } else if (settingPredators) {
@@ -94,7 +91,6 @@ void removeMarines() {
   Iterator<Marine> i = marines.iterator();
   while (i.hasNext()) {
     Marine m = i.next();
-
     if (m.getState() == false)
       i.remove();
   }
@@ -104,8 +100,7 @@ void addMarines() {
   ArrayList<Marine> m2 = new ArrayList();
   for (Marine m : marines) {
     m2.add(m);
-    if(random(0, 1) < m.reproductionProb)
-    m2.add(m.reproduce());
+    if(random(0, 1) < m.reproductionProb) m2.add(m.reproduce());
   }
   marines = m2;
 }
@@ -114,28 +109,28 @@ void initControls(){
   cp5 = new ControlP5(this);
 
   cp5.addButton("seaweed")
-     .setPosition(50,10)
-     .setSize(55,20);
+     .setPosition(20,10)
+     .setSize(65,20);
 
   cp5.addButton("prey")
-     .setPosition(110,10)
-     .setSize(55,20);
+     .setPosition(100,10)
+     .setSize(65,20);
 
   cp5.addButton("predator")
-     .setPosition(170,10)
-     .setSize(55,20);
+     .setPosition(180,10)
+     .setSize(65,20);
 
   cp5.addButton("superPredator")
-     .setPosition(230,10)
-     .setSize(55,20);
+     .setPosition(260,10)
+     .setSize(65,20);
 
   cp5.addButton("flowfield")
-     .setPosition(290,10)
-     .setSize(55,20);
+     .setPosition(340,10)
+     .setSize(65,20);
 
   cp5.addButton("fishratio")
-     .setPosition(350,10)
-     .setSize(55,20);
+     .setPosition(420,10)
+     .setSize(65,20);
 }
 
 void seaweed(){
