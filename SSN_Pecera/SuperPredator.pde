@@ -10,7 +10,7 @@ class SuperPredator extends Fish {
   }
   
   void setHunger(){
-    hunger += 1000;
+    hunger += 950;
     
   }
   
