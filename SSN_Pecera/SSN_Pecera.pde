@@ -6,6 +6,8 @@ ControlP5 cp5;
 Sea sea;
 ArrayList<Marine> marines;
 ArrayList<Fish> preys;
+ArrayList<Fish> predators;
+ArrayList<Fish> superpredators;
 
 int agentCount;
 PImage prey;
@@ -39,6 +41,8 @@ void setup() {
 
   marines = new ArrayList<Marine>();
   preys = new ArrayList();
+  predators = new ArrayList();
+  superpredators = new ArrayList();
 
   wallx = -width/10;
   wally = -height/10;
@@ -65,14 +69,20 @@ void draw() {
       if (viewRatio) v1.displayViewRatio();
       v1.move(marines, sea);
       
-      if (v instanceof Prey) {
+      if (v1 instanceof Prey) {
         preys.add(v1);
         v1.behave(preys);
-        
+      }else if(v1 instanceof Predator){
+        predators.add(v1);
+        v1.behave(preys);
+      } else if(v1 instanceof SuperPredator){
+        superpredators.add(v1);
+        v1.behave(preys);
       }
     }
 
     v.display();
+    
   }
 
   if (mousePressed && mouseY > 40) {
