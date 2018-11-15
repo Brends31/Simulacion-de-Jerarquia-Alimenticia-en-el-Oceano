@@ -24,6 +24,8 @@ abstract class Fish extends Marine {
     maxForce = 1.5;
     arrivalRadius = 200;
     this.image = image;
+    hunger = 0;
+    setHunger();
     setHunger();
   }
   void applyForce(PVector force) {

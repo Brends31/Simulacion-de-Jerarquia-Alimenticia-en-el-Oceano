@@ -10,7 +10,7 @@ class Predator extends Fish {
   }
   
   void setHunger(){
-    hunger = 1800;
+    hunger += 900;
   }
   
   Marine reproduce(){
