@@ -47,7 +47,7 @@ void draw() {
 
   sea.update();
   removeMarines();
-  if (frameCount % (60 * 5) == 0) addMarines();
+  if (frameCount % (60 * 10) == 0) addMarines();
 
   if (campoVisible)
     sea.display();
@@ -78,7 +78,7 @@ void draw() {
     } else if (settingPredators) {
       marines.add(new Predator(mouseX, mouseY, PVector.random2D(), predator));
     } else if (settingSuperPredators) {
-      marines.add(new SuperPredator(mouseX, mouseY,PVector.random2D(), superPredator));
+      marines.add(new SuperPredator(mouseX, mouseY, PVector.random2D(), superPredator));
     } else if (settingSeaweeds) {
       marines.add(new Seaweed(mouseX, mouseY));
     }
@@ -99,8 +99,8 @@ void addMarines() {
   ArrayList<Marine> m2 = new ArrayList();
   for (Marine m : marines) {
     m2.add(m);
-    //if(random(0, 1) < m.reproductionProb)
-    //m2.add(m.reproduce());
+    if(random(0, 1) < m.reproductionProb)
+    m2.add(m.reproduce());
   }
   marines = m2;
 }
