@@ -42,4 +42,6 @@ class SuperPredator extends Fish {
     eat(newTarget);
   }
 
+  void escape(ArrayList<Marine> marines){}
+
 }

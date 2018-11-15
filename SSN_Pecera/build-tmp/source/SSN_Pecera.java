@@ -25,6 +25,8 @@ ControlP5 cp5;
 Sea sea;
 ArrayList<Marine> marines;
 ArrayList<Fish> preys;
+ArrayList<Fish> predators;
+ArrayList<Fish> superpredators;
 
 int agentCount;
 PImage prey;
@@ -58,6 +60,8 @@ public void setup() {
 
   marines = new ArrayList<Marine>();
   preys = new ArrayList();
+  predators = new ArrayList();
+  superpredators = new ArrayList();
 
   wallx = -width/10;
   wally = -height/10;
@@ -83,14 +87,21 @@ public void draw() {
       Fish v1 = (Fish) v;
       if (viewRatio) v1.displayViewRatio();
       v1.move(marines, sea);
+      
+      if (v1 instanceof Prey) {
+        preys.add(v1);
+        v1.behave(preys);
+      }else if(v1 instanceof Predator){
+        predators.add(v1);
+        v1.behave(predators);
+      } else if(v1 instanceof SuperPredator){
+        superpredators.add(v1);
+        v1.behave(predators);
+      }
     }
-    if (v instanceof Prey) {
-      Fish v1 = (Fish) v;
-      preys.add(v1);
-      v1.behave(preys);
-      v1.update();
-    }
+
     v.display();
+    
   }
 
   if (mousePressed && mouseY > 40) {
@@ -119,72 +130,72 @@ public void addMarines() {
   ArrayList<Marine> m2 = new ArrayList();
   for (Marine m : marines) {
     m2.add(m);
-    if(random(0, 1) < m.reproductionProb) m2.add(m.reproduce());
+    if (random(0, 1) < m.reproductionProb) m2.add(m.reproduce());
   }
   marines = m2;
 }
 
-public void initControls(){
+public void initControls() {
   cp5 = new ControlP5(this);
 
   cp5.addButton("seaweed")
-     .setPosition(20,10)
-     .setSize(65,20);
+    .setPosition(20, 10)
+    .setSize(65, 20);
 
   cp5.addButton("prey")
-     .setPosition(100,10)
-     .setSize(65,20);
+    .setPosition(100, 10)
+    .setSize(65, 20);
 
   cp5.addButton("predator")
-     .setPosition(180,10)
-     .setSize(65,20);
+    .setPosition(180, 10)
+    .setSize(65, 20);
 
   cp5.addButton("superPredator")
-     .setPosition(260,10)
-     .setSize(65,20);
+    .setPosition(260, 10)
+    .setSize(65, 20);
 
   cp5.addButton("flowfield")
-     .setPosition(340,10)
-     .setSize(65,20);
+    .setPosition(340, 10)
+    .setSize(65, 20);
 
   cp5.addButton("fishratio")
-     .setPosition(420,10)
-     .setSize(65,20);
+    .setPosition(420, 10)
+    .setSize(65, 20);
 }
 
-public void seaweed(){
+public void seaweed() {
   settingPreys = false;
   settingPredators = false;
   settingSuperPredators = false;
   settingSeaweeds = true;
 }
 
-public void prey(){
+public void prey() {
   settingPreys = true;
   settingPredators = false;
   settingSuperPredators = false;
   settingSeaweeds = false;
 }
 
-public void predator(){
+public void predator() {
   settingPreys = false;
   settingPredators = true;
   settingSuperPredators = false;
   settingSeaweeds = false;
 }
 
-public void superPredator(){
+public void superPredator() {
   settingPreys = false;
   settingPredators = false;
   settingSuperPredators = true;
   settingSeaweeds = false;
 }
 
-public void flowfield(){
+public void flowfield() {
   campoVisible = !campoVisible;
 }
 
-public void fishratio(){
+public void fishratio() {
   viewRatio = !viewRatio;
 }
 abstract class Marine{
@@ -207,7 +218,6 @@ abstract class Marine{
 	}
   
   public abstract Marine reproduce();
-  
 	public abstract void display();
 }
 class Predator extends Fish {
@@ -222,7 +232,7 @@ class Predator extends Fish {
   }
   
   public void setHunger(){
-    hunger = 1800;
+    hunger += 850;
   }
   
   public Marine reproduce(){
@@ -236,22 +246,25 @@ class Predator extends Fish {
     return hunger < 1000;
   }
 
-  
   public void hunt(ArrayList<Marine> marines) {
     Prey newTarget = null;
     for (Marine target : marines) {
       if (target instanceof Prey && isHungry()) {
         if (newTarget == null) { 
           newTarget = (Prey) target;
-        } else {
+        } 
+        else {
           if (PVector.dist(pos, newTarget.pos) > PVector.dist(pos, target.pos)) {
             newTarget = (Prey) target;
           }
         }
-      }
+      } 
+      else if (target instanceof SuperPredator) {
+        repel(target.pos);
+      } 
     }
     if(newTarget!=null)
-    eat(newTarget);
+      eat(newTarget);
   }
 
 }
@@ -270,10 +283,8 @@ class Prey extends Fish {
   }
 
   public void setHunger() {
-    hunger = 1500;
+    hunger += 700;
   }
-
-
 
   public Marine reproduce() {
     float corrX = random(-10, 10); 
@@ -301,8 +312,7 @@ class Prey extends Fish {
             }
           }
         } else if (target instanceof Predator || target instanceof SuperPredator) {
-          //repel(target.pos);
-          //Aqui va el escape
+          repel(target.pos);
         }
       }
     }
@@ -342,7 +352,7 @@ class SuperPredator extends Fish {
   }
   
   public void setHunger(){
-    hunger = 2000;
+    hunger += 950;
     
   }
   
@@ -374,6 +384,8 @@ class SuperPredator extends Fish {
     eat(newTarget);
   }
 
+  public void escape(ArrayList<Marine> marines){}
+
 }
 abstract class Fish extends Marine {
   PVector vel;
@@ -401,10 +413,18 @@ abstract class Fish extends Marine {
     maxForce = 1.5f;
     arrivalRadius = 200;
     this.image = image;
+    hunger = 0;
+    setHunger();
     setHunger();
   }
+
   public void applyForce(PVector force) {
     PVector f = PVector.div(force, mass);
+    acc.add(f);
+  }
+
+  public void repel(PVector marine){
+    PVector f = PVector.div(marine, -mass/10);
     acc.add(f);
   }
 
@@ -418,11 +438,11 @@ abstract class Fish extends Marine {
     rotate(ang);
     image(image, -20, -25, 50, 50);
 
-    beginShape();
+    /*beginShape();
     vertex(0, size);
     vertex(0, -size);
     vertex(size * 3, 0);
-    endShape(CLOSE);
+    endShape(CLOSE);*/
     popMatrix();
   }
 
@@ -569,11 +589,6 @@ abstract class Fish extends Marine {
       steer.limit(maxForce);
       applyForce(steer);
     }
-  }
-
-  public void repel(PVector force){
-    PVector f = PVector.div(force, -mass);
-    acc.add(f);
   }
 
   public abstract void setHunger();

@@ -16,8 +16,6 @@ class Prey extends Fish {
     hunger += 700;
   }
 
-
-
   Marine reproduce() {
     float corrX = random(-10, 10); 
     float corrY= random(-10, 10);
@@ -45,7 +43,6 @@ class Prey extends Fish {
           }
         } else if (target instanceof Predator || target instanceof SuperPredator) {
           //repel(target.pos);
-          //Aqui va el escape
         }
       }
     }

@@ -24,22 +24,25 @@ class Predator extends Fish {
     return hunger < 1000;
   }
 
-  
   void hunt(ArrayList<Marine> marines) {
     Prey newTarget = null;
     for (Marine target : marines) {
       if (target instanceof Prey && isHungry()) {
         if (newTarget == null) { 
           newTarget = (Prey) target;
-        } else {
+        } 
+        else {
           if (PVector.dist(pos, newTarget.pos) > PVector.dist(pos, target.pos)) {
             newTarget = (Prey) target;
           }
         }
-      }
+      } 
+      else if (target instanceof SuperPredator) {
+        repel(target.pos);
+      } 
     }
     if(newTarget!=null)
-    eat(newTarget);
+      eat(newTarget);
   }
 
 }

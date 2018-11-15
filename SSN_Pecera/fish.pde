@@ -34,8 +34,8 @@ abstract class Fish extends Marine {
     acc.add(f);
   }
 
-  void repel(PVector force){
-    PVector f = PVector.div(force, -mass);
+  void repel(PVector marine){
+    PVector f = PVector.div(marine, -mass/10);
     acc.add(f);
   }
 
@@ -49,11 +49,11 @@ abstract class Fish extends Marine {
     rotate(ang);
     image(image, -20, -25, 50, 50);
 
-    beginShape();
+    /*beginShape();
     vertex(0, size);
     vertex(0, -size);
     vertex(size * 3, 0);
-    endShape(CLOSE);
+    endShape(CLOSE);*/
     popMatrix();
   }
 
@@ -201,8 +201,6 @@ abstract class Fish extends Marine {
       applyForce(steer);
     }
   }
-
-  
 
   abstract void setHunger();
   abstract boolean isHungry();
