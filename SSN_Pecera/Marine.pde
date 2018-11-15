@@ -18,6 +18,5 @@ abstract class Marine{
 	}
   
   abstract Marine reproduce();
-  
 	abstract void display();
 }
