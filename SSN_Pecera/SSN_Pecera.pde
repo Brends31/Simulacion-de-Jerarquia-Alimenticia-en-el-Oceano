@@ -112,8 +112,7 @@ void addMarines() {
 
 void keyPressed() {
   if (keyPressed) {
-    campoVisible = (key == 'q' || key == 'Q') ? !campoVisible : campoVisible;
-    viewRatio = (key == 'a' || key == 'A') ? !viewRatio : viewRatio;
+    
     if (key == 'w' || key == 'W') {
       settingPreys = true;
       settingPredators = false;
@@ -148,24 +147,28 @@ void initControls(){
   cp5 = new ControlP5(this);
 
   cp5.addButton("seaweed")
-     .setValue(0)
      .setPosition(100,10)
-     .setSize(100,19);
+     .setSize(50,19);
 
   cp5.addButton("prey")
-     .setValue(0)
-     .setPosition(300,10)
-     .setSize(100,19);
+     .setPosition(150,10)
+     .setSize(50,19);
 
   cp5.addButton("predator")
-     .setValue(0)
-     .setPosition(500,10)
-     .setSize(100,19);
+     .setPosition(300,10)
+     .setSize(50,19);
 
   cp5.addButton("superPredator")
-     .setValue(0)
-     .setPosition(700,10)
-     .setSize(100,19);
+     .setPosition(450,10)
+     .setSize(50,19);
+
+  cp5.addButton("flowfield")
+     .setPosition(600,10)
+     .setSize(50,19);
+
+  cp5.addButton("fishratio")
+     .setPosition(750,10)
+     .setSize(50,19);
 }
 
 void seaweed(){
@@ -194,4 +197,12 @@ void superPredator(){
   settingPredators = false;
   settingSuperPredators = true;
   settingSeaweeds = false;
+}
+
+void flowfield(){
+  campoVisible = (key == 'q' || key == 'Q') ? !campoVisible : campoVisible;
+}
+
+void fishratio(){
+  viewRatio = (key == 'a' || key == 'A') ? !viewRatio : viewRatio;
 }
