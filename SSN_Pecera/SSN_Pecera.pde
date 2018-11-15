@@ -1,5 +1,8 @@
 import java.util.Iterator;
 
+import controlP5.*;
+ControlP5 cp5;
+
 Sea sea;
 ArrayList<Marine> marines;
 ArrayList<Fish> preys;
@@ -30,6 +33,8 @@ void setup() {
 
   size(1280, 720, P2D);
   background(#27CED6);
+
+  initControls();
 
   sea = new Sea(20, 0.2, 0.000001);
 
@@ -136,4 +141,57 @@ void keyPressed() {
       settingSeaweeds = true;
     }
   }
+}
+
+
+void initControls(){
+  cp5 = new ControlP5(this);
+
+  cp5.addButton("seaweed")
+     .setValue(0)
+     .setPosition(100,10)
+     .setSize(100,19);
+
+  cp5.addButton("prey")
+     .setValue(0)
+     .setPosition(300,10)
+     .setSize(100,19);
+
+  cp5.addButton("predator")
+     .setValue(0)
+     .setPosition(500,10)
+     .setSize(100,19);
+
+  cp5.addButton("superPredator")
+     .setValue(0)
+     .setPosition(700,10)
+     .setSize(100,19);
+}
+
+void seaweed(){
+  settingPreys = false;
+  settingPredators = false;
+  settingSuperPredators = false;
+  settingSeaweeds = true;
+}
+
+void prey(){
+  settingPreys = true;
+  settingPredators = false;
+  settingSuperPredators = false;
+  settingSeaweeds = false;
+}
+
+void predator(){
+  settingPreys = false;
+  settingPredators = true;
+  settingSuperPredators = false;
+  settingSeaweeds = false;
+}
+
+void superPredator(){
+  settingPreys = false;
+  settingPredators = false;
+  settingSuperPredators = true;
+  settingSeaweeds = false;
 }

@@ -4,6 +4,7 @@ import processing.event.*;
 import processing.opengl.*; 
 
 import java.util.Iterator; 
+import controlP5.*; 
 
 import java.util.HashMap; 
 import java.util.ArrayList; 
@@ -17,6 +18,9 @@ import java.io.IOException;
 public class SSN_Pecera extends PApplet {
 
 
+
+
+ControlP5 cp5;
 
 Sea sea;
 ArrayList<Marine> marines;
@@ -35,7 +39,7 @@ boolean settingPredators = false;
 boolean settingSuperPredators = false;
 
 float extraDegrees = TWO_PI/360;
-float wall;
+float wallx, wally;
 
 public void setup() {
   //fullScreen(P2D);
@@ -49,12 +53,15 @@ public void setup() {
   
   background(0xff27CED6);
 
+  initControls();
+
   sea = new Sea(20, 0.2f, 0.000001f);
 
   marines = new ArrayList<Marine>();
   preys = new ArrayList();
 
-  wall = width/10;
+  wallx = -width/10;
+  wally = -height/10;
 }
 
 public void draw() {
@@ -64,7 +71,7 @@ public void draw() {
 
   sea.update();
   removeMarines();
-  if (frameCount % (60 * 5) == 0) addMarines();
+  if (frameCount % (60 * 10) == 0) addMarines();
 
   if (campoVisible)
     sea.display();
@@ -95,7 +102,7 @@ public void draw() {
     } else if (settingPredators) {
       marines.add(new Predator(mouseX, mouseY, PVector.random2D(), predator));
     } else if (settingSuperPredators) {
-      marines.add(new SuperPredator(mouseX, mouseY,PVector.random2D(), superPredator));
+      marines.add(new SuperPredator(mouseX, mouseY, PVector.random2D(), superPredator));
     } else if (settingSeaweeds) {
       marines.add(new Seaweed(mouseX, mouseY));
     }
@@ -116,8 +123,8 @@ public void addMarines() {
   ArrayList<Marine> m2 = new ArrayList();
   for (Marine m : marines) {
     m2.add(m);
-    //if(random(0, 1) < m.reproductionProb)
-    //m2.add(m.reproduce());
+    if(random(0, 1) < m.reproductionProb)
+    m2.add(m.reproduce());
   }
   marines = m2;
 }
@@ -153,6 +160,59 @@ public void keyPressed() {
       settingSeaweeds = true;
     }
   }
+}
+
+
+public void initControls(){
+  cp5 = new ControlP5(this);
+
+  cp5.addButton("seaweed")
+     .setValue(0)
+     .setPosition(100,10)
+     .setSize(100,19);
+
+  cp5.addButton("prey")
+     .setValue(0)
+     .setPosition(300,10)
+     .setSize(100,19);
+
+  cp5.addButton("predator")
+     .setValue(0)
+     .setPosition(500,10)
+     .setSize(100,19);
+
+  cp5.addButton("superPredator")
+     .setValue(0)
+     .setPosition(700,10)
+     .setSize(100,19);
+}
+
+public void seaweed(){
+  settingPreys = false;
+  settingPredators = false;
+  settingSuperPredators = false;
+  settingSeaweeds = true;
+}
+
+public void prey(){
+  settingPreys = true;
+  settingPredators = false;
+  settingSuperPredators = false;
+  settingSeaweeds = false;
+}
+
+public void predator(){
+  settingPreys = false;
+  settingPredators = true;
+  settingSuperPredators = false;
+  settingSeaweeds = false;
+}
+
+public void superPredator(){
+  settingPreys = false;
+  settingPredators = false;
+  settingSuperPredators = true;
+  settingSeaweeds = false;
 }
 abstract class Marine{
 	PVector pos;
@@ -203,32 +263,6 @@ class Predator extends Fish {
     return hunger < 1000;
   }
 
-  public void wandering() {
-    if (pos. x < wall) {
-      PVector desired = new PVector(maxSpeed,vel.y);
-      PVector steer = PVector.sub(desired, vel);
-      steer.limit(maxForce);
-      applyForce(steer);
-    } 
-    else if (pos.x > (width-wall)){
-      PVector desired = new PVector(-maxSpeed,vel.y);
-      PVector steer = PVector.add(desired, vel);
-      steer.limit(maxForce);
-      applyForce(steer);
-    }
-
-    if(pos.y < wall){
-      PVector desired = new PVector(maxSpeed,vel.x);
-      PVector steer = PVector.sub(desired, vel);
-      steer.limit(maxForce);
-      applyForce(steer);
-    } else if(pos.y > (height - wall)){
-      PVector desired = new PVector(-maxSpeed,vel.x);
-      PVector steer = PVector.sub(desired, vel);
-      steer.limit(maxForce);
-      applyForce(steer);
-    }
-  }
   
   public void hunt(ArrayList<Marine> marines) {
     Prey newTarget = null;
@@ -396,14 +430,14 @@ abstract class Fish extends Marine {
 
   public void display() {
     float ang = vel.heading();
-    
+
     noStroke();
     fill(c);
     pushMatrix();
     translate(pos.x, pos.y);
     rotate(ang);
     image(image, -20, -25, 50, 50);
-    
+
     beginShape();
     vertex(0, size);
     vertex(0, -size);
@@ -530,37 +564,40 @@ abstract class Fish extends Marine {
     hunger--;
     if (hunger == 0) setDead();
   }
-  
-  public void wandering(){
-    if (pos. x < wall) {
-      PVector desired = new PVector(maxSpeed,vel.y);
+
+  public void wandering() {
+    if (pos.x < wallx) {
+      PVector desired = new PVector(maxSpeed, vel.y);
       PVector steer = PVector.sub(desired, vel);
       steer.limit(maxForce);
       applyForce(steer);
-    } 
-    else if (pos.x > (width-wall)){
-      PVector desired = new PVector(-maxSpeed,vel.y);
+    } else if (pos.x > (width-wallx)) {
+      PVector desired = new PVector(-maxSpeed, vel.y);
       PVector steer = PVector.add(desired, vel);
       steer.limit(maxForce);
       applyForce(steer);
     }
 
-    if(pos.y < wall){
-      PVector desired = new PVector(maxSpeed,vel.x);
+    if (pos.y < wally) {
+      PVector desired = new PVector(vel.x, maxSpeed);
       PVector steer = PVector.sub(desired, vel);
       steer.limit(maxForce);
       applyForce(steer);
-    } else if(pos.y > (height - wall)){
-      PVector desired = new PVector(-maxSpeed,vel.x);
+    } else if (pos.y > (height - wally)) {
+      PVector desired = new PVector(vel.x, -maxSpeed);
       PVector steer = PVector.sub(desired, vel);
       steer.limit(maxForce);
       applyForce(steer);
     }
   }
-  
+
+  public void repel(PVector force){
+    PVector f = PVector.div(force, -mass);
+    acc.add(f);
+  }
+
   public abstract void setHunger();
   public abstract boolean isHungry();
-  
   public abstract void hunt(ArrayList<Marine> marines);
 }
 class Sea {
