@@ -96,7 +96,7 @@ public void draw() {
     v.display();
   }
 
-  if (mousePressed) {
+  if (mousePressed && mouseY > 25) {
     if (settingPreys) {
       marines.add(new Prey(mouseX, mouseY, PVector.random2D(), prey));
     } else if (settingPredators) {
@@ -166,28 +166,28 @@ public void initControls(){
   cp5 = new ControlP5(this);
 
   cp5.addButton("seaweed")
-     .setPosition(100,10)
-     .setSize(50,19);
+     .setPosition(50,10)
+     .setSize(55,20);
 
   cp5.addButton("prey")
-     .setPosition(150,10)
-     .setSize(50,19);
+     .setPosition(110,10)
+     .setSize(55,20);
 
   cp5.addButton("predator")
-     .setPosition(300,10)
-     .setSize(50,19);
+     .setPosition(170,10)
+     .setSize(55,20);
 
   cp5.addButton("superPredator")
-     .setPosition(450,10)
-     .setSize(50,19);
+     .setPosition(230,10)
+     .setSize(55,20);
 
   cp5.addButton("flowfield")
-     .setPosition(600,10)
-     .setSize(50,19);
+     .setPosition(290,10)
+     .setSize(55,20);
 
   cp5.addButton("fishratio")
-     .setPosition(750,10)
-     .setSize(50,19);
+     .setPosition(350,10)
+     .setSize(55,20);
 }
 
 public void seaweed(){
@@ -219,11 +219,11 @@ public void superPredator(){
 }
 
 public void flowfield(){
-  campoVisible = (key == 'q' || key == 'Q') ? !campoVisible : campoVisible;
+  campoVisible = !campoVisible;
 }
 
 public void fishratio(){
-  viewRatio = (key == 'a' || key == 'A') ? !viewRatio : viewRatio;
+  viewRatio = !viewRatio;
 }
 abstract class Marine{
 	PVector pos;
@@ -278,7 +278,7 @@ class Predator extends Fish {
   public void hunt(ArrayList<Marine> marines) {
     Prey newTarget = null;
     for (Marine target : marines) {
-      if (target instanceof Prey) {
+      if (target instanceof Prey && isHungry()) {
         if (newTarget == null) { 
           newTarget = (Prey) target;
         } else {
@@ -311,6 +311,8 @@ class Prey extends Fish {
     hunger = 1500;
   }
 
+
+
   public Marine reproduce() {
     float corrX = random(-10, 10); 
     float corrY= random(-10, 10);
@@ -327,13 +329,18 @@ class Prey extends Fish {
   public void hunt(ArrayList<Marine> marines) {
     Seaweed newTarget = null;
     for (Marine target : marines) {
-      if (target instanceof Seaweed) {
-        if (newTarget == null) { 
-          newTarget = (Seaweed) target;
-        } else {
-          if (PVector.dist(pos, newTarget.pos) > PVector.dist(pos, target.pos)) {
+      if (PVector.dist(target.pos, pos) < viewRatio) {
+        if (target instanceof Seaweed && isHungry()) {
+          if (newTarget == null) { 
             newTarget = (Seaweed) target;
+          } else {
+            if (PVector.dist(pos, newTarget.pos) > PVector.dist(pos, target.pos)) {
+              newTarget = (Seaweed) target;
+            }
           }
+        } else if (target instanceof Predator || target instanceof SuperPredator) {
+          //repel(target.pos);
+          //Aqui va el escape
         }
       }
     }
@@ -391,7 +398,7 @@ class SuperPredator extends Fish {
   public void hunt(ArrayList<Marine> marines) {
     Fish newTarget = null;
     for (Marine target : marines) {
-      if (target instanceof Predator || target instanceof Prey) {
+      if ((target instanceof Predator || target instanceof Prey) && isHungry()) {
         if (newTarget == null) { 
           newTarget = (Fish) target;
         } else {
@@ -570,7 +577,7 @@ abstract class Fish extends Marine {
     f.normalize();
     wandering();
     applyForce(f);
-    if (isHungry()) hunt(marines);
+    hunt(marines);
     update();
     hunger--;
     if (hunger == 0) setDead();

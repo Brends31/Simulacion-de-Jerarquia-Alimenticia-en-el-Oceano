@@ -77,7 +77,7 @@ void draw() {
     v.display();
   }
 
-  if (mousePressed) {
+  if (mousePressed && mouseY > 25) {
     if (settingPreys) {
       marines.add(new Prey(mouseX, mouseY, PVector.random2D(), prey));
     } else if (settingPredators) {
@@ -110,65 +110,32 @@ void addMarines() {
   marines = m2;
 }
 
-void keyPressed() {
-  if (keyPressed) {
-    
-    if (key == 'w' || key == 'W') {
-      settingPreys = true;
-      settingPredators = false;
-      settingSuperPredators = false;
-      settingSeaweeds = false;
-    }
-    if (key == 'e' || key == 'E') {
-      settingPreys = false;
-      settingPredators = true;
-      settingSuperPredators = false;
-      settingSeaweeds = false;
-    }
-
-    if (key == 'r' || key == 'R') {
-      settingPreys = false;
-      settingPredators = false;
-      settingSuperPredators = true;
-      settingSeaweeds = false;
-    }
-
-    if (key == 't' || key == 'T') {
-      settingPreys = false;
-      settingPredators = false;
-      settingSuperPredators = false;
-      settingSeaweeds = true;
-    }
-  }
-}
-
-
 void initControls(){
   cp5 = new ControlP5(this);
 
   cp5.addButton("seaweed")
-     .setPosition(100,10)
-     .setSize(50,19);
+     .setPosition(50,10)
+     .setSize(55,20);
 
   cp5.addButton("prey")
-     .setPosition(150,10)
-     .setSize(50,19);
+     .setPosition(110,10)
+     .setSize(55,20);
 
   cp5.addButton("predator")
-     .setPosition(300,10)
-     .setSize(50,19);
+     .setPosition(170,10)
+     .setSize(55,20);
 
   cp5.addButton("superPredator")
-     .setPosition(450,10)
-     .setSize(50,19);
+     .setPosition(230,10)
+     .setSize(55,20);
 
   cp5.addButton("flowfield")
-     .setPosition(600,10)
-     .setSize(50,19);
+     .setPosition(290,10)
+     .setSize(55,20);
 
   cp5.addButton("fishratio")
-     .setPosition(750,10)
-     .setSize(50,19);
+     .setPosition(350,10)
+     .setSize(55,20);
 }
 
 void seaweed(){
@@ -200,9 +167,9 @@ void superPredator(){
 }
 
 void flowfield(){
-  campoVisible = (key == 'q' || key == 'Q') ? !campoVisible : campoVisible;
+  campoVisible = !campoVisible;
 }
 
 void fishratio(){
-  viewRatio = (key == 'a' || key == 'A') ? !viewRatio : viewRatio;
+  viewRatio = !viewRatio;
 }
