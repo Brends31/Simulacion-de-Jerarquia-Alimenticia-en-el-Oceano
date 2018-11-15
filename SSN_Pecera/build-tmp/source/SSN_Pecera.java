@@ -311,8 +311,10 @@ class Prey extends Fish {
               newTarget = (Seaweed) target;
             }
           }
-        } else if (target instanceof Predator || target instanceof SuperPredator) {
-          repel(target.pos);
+        } else if (target instanceof Predator) {
+          separate((Predator)target);
+        } else if (target instanceof SuperPredator){
+          separate((SuperPredator)target);
         }
       }
     }
@@ -353,7 +355,6 @@ class SuperPredator extends Fish {
   
   public void setHunger(){
     hunger += 950;
-    
   }
   
   public Marine reproduce(){
@@ -383,8 +384,6 @@ class SuperPredator extends Fish {
     if(newTarget!=null)
     eat(newTarget);
   }
-
-  public void escape(ArrayList<Marine> marines){}
 
 }
 abstract class Fish extends Marine {
@@ -488,6 +487,24 @@ abstract class Fish extends Marine {
     PVector steering = PVector.sub(desired, vel);
     steering.limit(maxForce);
     applyForce(steering);
+  }
+
+  public void separate(Fish fish){
+    PVector averageSeparation = new PVector(0, 0);
+    
+    float d = PVector.dist(pos, fish.pos);
+
+    if (d < separationDistance) {
+      PVector difference = PVector.sub(pos, fish.pos);
+      difference.normalize();
+      difference.div(d);
+      averageSeparation.add(difference);
+    }
+
+    averageSeparation.mult(separationRatio);
+    averageSeparation.limit(maxSpeed);
+    applyForce(averageSeparation);
+
   }
 
   public void behave(ArrayList<Fish> fishes) {

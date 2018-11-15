@@ -11,7 +11,6 @@ class SuperPredator extends Fish {
   
   void setHunger(){
     hunger += 950;
-    
   }
   
   Marine reproduce(){
@@ -41,7 +40,5 @@ class SuperPredator extends Fish {
     if(newTarget!=null)
     eat(newTarget);
   }
-
-  void escape(ArrayList<Marine> marines){}
 
 }

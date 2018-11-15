@@ -41,8 +41,10 @@ class Prey extends Fish {
               newTarget = (Seaweed) target;
             }
           }
-        } else if (target instanceof Predator || target instanceof SuperPredator) {
-          //repel(target.pos);
+        } else if (target instanceof Predator) {
+          separate((Predator)target);
+        } else if (target instanceof SuperPredator){
+          separate((SuperPredator)target);
         }
       }
     }

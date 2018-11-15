@@ -101,6 +101,24 @@ abstract class Fish extends Marine {
     applyForce(steering);
   }
 
+  void separate(Fish fish){
+    PVector averageSeparation = new PVector(0, 0);
+    
+    float d = PVector.dist(pos, fish.pos);
+
+    if (d < separationDistance) {
+      PVector difference = PVector.sub(pos, fish.pos);
+      difference.normalize();
+      difference.div(d);
+      averageSeparation.add(difference);
+    }
+
+    averageSeparation.mult(separationRatio);
+    averageSeparation.limit(maxSpeed);
+    applyForce(averageSeparation);
+
+  }
+
   void behave(ArrayList<Fish> fishes) {
     PVector averageSeparation = new PVector(0, 0);
     PVector averageAlignment = new PVector(0, 0);
