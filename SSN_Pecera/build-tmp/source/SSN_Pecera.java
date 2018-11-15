@@ -260,7 +260,7 @@ class Predator extends Fish {
         }
       } 
       else if (target instanceof SuperPredator) {
-        repel(target.pos);
+        separate((SuperPredator)target);
       } 
     }
     if(newTarget!=null)
