@@ -1,5 +1,8 @@
 class Prey extends Fish {
 
+  float preySize = 3;
+  float preyViewRatio = 100*preySize;
+
   Prey(float x, float y, PVector vel, PImage image) {
     this(x, y, vel, image, 1);
   }
@@ -8,8 +11,8 @@ class Prey extends Fish {
     super(x, y, vel, image);
     this.c = color(0, 0, 255);
     this.mass = mass;
-    this.size = mass/2 + 5;
-    viewRatio = 550;
+    this.size = preySize;
+    viewRatio = preyViewRatio;
   }
 
   void setHunger() {

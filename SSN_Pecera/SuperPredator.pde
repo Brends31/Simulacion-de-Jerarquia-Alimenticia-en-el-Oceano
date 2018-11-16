@@ -1,10 +1,13 @@
 class SuperPredator extends Fish {
+  
+  float superPredatorSize = 5;
+  float superPredatorViewRatio = 100*superPredatorSize;
 
   SuperPredator(float x, float y, PVector vel,PImage image) {
     super(x, y, vel,image);
     this.c = color(255, 0, 255);
     this.mass = 5;
-    this.size = mass/2 + 10;
+    this.size = superPredatorSize;
     viewRatio = 650;
     
   }

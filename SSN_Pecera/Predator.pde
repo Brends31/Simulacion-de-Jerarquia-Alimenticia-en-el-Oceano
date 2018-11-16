@@ -1,12 +1,14 @@
 class Predator extends Fish {
+  
+  float predatorSize = 4;
+  float predatorViewRatio = 100*predatorSize;
 
   Predator(float x, float y, PVector vel,PImage image) {
     super(x, y, vel,image);
     this.c = color(255, 0, 0);
     this.mass = 5;
-    this.size = mass/2 + 5;
-    viewRatio = 600;
-    
+    this.size = predatorSize;
+    viewRatio = predatorViewRatio;
   }
   
   void setHunger(){

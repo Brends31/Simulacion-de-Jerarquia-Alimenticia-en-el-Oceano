@@ -47,12 +47,12 @@ abstract class Fish extends Marine {
     pushMatrix();
     translate(pos.x, pos.y);
     rotate(ang);
-    image(image, -20, -25, 50, 50);
+    image(image, -size, -size, size*2, size*2);
 
     /*beginShape();
     vertex(0, size);
     vertex(0, -size);
-    vertex(size * 3, 0);
+    vertex(size, 0);
     endShape(CLOSE);*/
 
     popMatrix();

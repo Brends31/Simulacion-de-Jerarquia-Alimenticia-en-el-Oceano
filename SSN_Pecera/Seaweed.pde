@@ -1,5 +1,5 @@
 class Seaweed extends Marine{
-	int size = 20;
+	int size = 2;
 
 	Seaweed(float x, float y){
 	super(x, y);

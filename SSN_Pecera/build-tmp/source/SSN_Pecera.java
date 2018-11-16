@@ -56,7 +56,7 @@ public void setup() {
 
   initControls();
 
-  sea = new Sea(20, 0.2f, 0.000001f);
+  sea = new Sea(35, 0.2f, 0.000001f);
 
   marines = new ArrayList<Marine>();
   preys = new ArrayList();
@@ -223,14 +223,16 @@ abstract class Marine{
 	public abstract void display();
 }
 class Predator extends Fish {
+  
+  float predatorSize = 4;
+  float predatorViewRatio = 100*predatorSize;
 
   Predator(float x, float y, PVector vel,PImage image) {
     super(x, y, vel,image);
     this.c = color(255, 0, 0);
     this.mass = 5;
-    this.size = mass/2 + 5;
-    viewRatio = 600;
-    
+    this.size = predatorSize;
+    viewRatio = predatorViewRatio;
   }
   
   public void setHunger(){
@@ -272,6 +274,9 @@ class Predator extends Fish {
 }
 class Prey extends Fish {
 
+  float preySize = 3;
+  float preyViewRatio = 100*preySize;
+
   Prey(float x, float y, PVector vel, PImage image) {
     this(x, y, vel, image, 1);
   }
@@ -280,8 +285,8 @@ class Prey extends Fish {
     super(x, y, vel, image);
     this.c = color(0, 0, 255);
     this.mass = mass;
-    this.size = mass/2 + 5;
-    viewRatio = 550;
+    this.size = preySize;
+    viewRatio = preyViewRatio;
   }
 
   public void setHunger() {
@@ -326,7 +331,7 @@ class Prey extends Fish {
   }
 }
 class Seaweed extends Marine{
-	int size = 20;
+	int size = 2;
 
 	Seaweed(float x, float y){
 	super(x, y);
@@ -346,12 +351,15 @@ class Seaweed extends Marine{
   
 }
 class SuperPredator extends Fish {
+  
+  float superPredatorSize = 5;
+  float superPredatorViewRatio = 100*superPredatorSize;
 
   SuperPredator(float x, float y, PVector vel,PImage image) {
     super(x, y, vel,image);
     this.c = color(255, 0, 255);
     this.mass = 5;
-    this.size = mass/2 + 10;
+    this.size = superPredatorSize;
     viewRatio = 650;
     
   }
@@ -438,13 +446,14 @@ abstract class Fish extends Marine {
     pushMatrix();
     translate(pos.x, pos.y);
     rotate(ang);
-    //image(image, -20, -25, 50, 50);
+    image(image, -size, -size, size*2, size*2);
 
-    beginShape();
+    /*beginShape();
     vertex(0, size);
     vertex(0, -size);
-    vertex(size * 3, 0);
-    endShape(CLOSE);
+    vertex(size, 0);
+    endShape(CLOSE);*/
+
     popMatrix();
   }
 

@@ -37,7 +37,7 @@ void setup() {
 
   initControls();
 
-  sea = new Sea(20, 0.2, 0.000001);
+  sea = new Sea(35, 0.2, 0.000001);
 
   marines = new ArrayList<Marine>();
   preys = new ArrayList();
