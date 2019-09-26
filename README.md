@@ -1,4 +1,4 @@
-# IISEM-SSN-Pecera
+# Simulación de Jerarquía Alimenticia en el Océano
 
 Sistema de Simulación de un sistema alimenticio basado en una jerarquía de peces.
 
